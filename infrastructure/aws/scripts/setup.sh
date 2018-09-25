@@ -5,7 +5,9 @@ then
 	then
 		vpcId=$(aws ec2 create-vpc --cidr-block 10.0.0.0/16 | jq -r ".Vpc.VpcId")
 
-		subnetId=$(aws ec2 create-subnet --vpc-id $vpcId --cidr-block 10.0.1.0/24 | jq -r ".Subnet.SubnetId")
+		subnet1Id=$(aws ec2 create-subnet --vpc-id $vpcId --cidr-block 10.0.1.0/24 | jq -r ".Subnet.SubnetId")
+		subnet2Id=$(aws ec2 create-subnet --vpc-id $vpcId --cidr-block 10.0.2.0/24 | jq -r ".Subnet.SubnetId")
+		subnet3Id=$(aws ec2 create-subnet --vpc-id $vpcId --cidr-block 10.0.3.0/24 | jq -r ".Subnet.SubnetId")
 
 		internetGatewayId=$(aws ec2 create-internet-gateway | jq -r ".InternetGateway.InternetGatewayId")
 
@@ -13,11 +15,13 @@ then
 
 		routeTableId=$(aws ec2 create-route-table --vpc-id $vpcId | jq -r ".RouteTable.RouteTableId")
 
-		associationId=$(aws ec2 associate-route-table --route-table-id $routeTableId --subnet-id $subnetId | jq -r ".AssociationId")
+		association1Id=$(aws ec2 associate-route-table --route-table-id $routeTableId --subnet-id $subnet1Id | jq -r ".AssociationId")
+		association2Id=$(aws ec2 associate-route-table --route-table-id $routeTableId --subnet-id $subnet2Id | jq -r ".AssociationId")
+		association3Id=$(aws ec2 associate-route-table --route-table-id $routeTableId --subnet-id $subnet3Id | jq -r ".AssociationId")
 
 		return=$(aws ec2 create-route --route-table-id $routeTableId --destination-cidr-block 0.0.0.0/0 --gateway-id $internetGatewayId | jq -r ".Return")
 		
-		aws ec2 create-tags --resources $vpcId $subnetId $internetGatewayId $routeTableId --tags Key=Name,Value=$1
+		aws ec2 create-tags --resources $vpcId $subnet1Id $subnet2Id $subnet3Id $internetGatewayId $routeTableId --tags Key=Name,Value=$1
 		
 	else
 		echo "exist stack name!"
