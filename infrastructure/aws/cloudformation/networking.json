@@ -1,0 +1,23 @@
+{
+  "Parameters": {
+    "Name": {
+      "Type": "String"
+    }
+  },
+  "Resources": {
+    "stack1": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "10.0.0.0/16",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Ref": "Name"
+            }
+          }
+        ]
+      }
+    }
+  }
+}
