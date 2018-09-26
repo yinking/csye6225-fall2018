@@ -9,6 +9,9 @@ then
 		subnet1Id=$(aws ec2 create-subnet --vpc-id $vpcId --cidr-block ${subnet_cidr[0]} --availability-zone ${subnet_zone[0]} | jq -r ".Subnet.SubnetId")
 		subnet2Id=$(aws ec2 create-subnet --vpc-id $vpcId --cidr-block ${subnet_cidr[1]} --availability-zone ${subnet_zone[1]} | jq -r ".Subnet.SubnetId")
 		subnet3Id=$(aws ec2 create-subnet --vpc-id $vpcId --cidr-block ${subnet_cidr[2]} --availability-zone ${subnet_zone[2]} | jq -r ".Subnet.SubnetId")
+		subnet4Id=$(aws ec2 create-subnet --vpc-id $vpcId --cidr-block ${subnet_cidr[3]} --availability-zone ${subnet_zone[0]} | jq -r ".Subnet.SubnetId")
+		subnet5Id=$(aws ec2 create-subnet --vpc-id $vpcId --cidr-block ${subnet_cidr[4]} --availability-zone ${subnet_zone[1]} | jq -r ".Subnet.SubnetId")
+		subnet6Id=$(aws ec2 create-subnet --vpc-id $vpcId --cidr-block ${subnet_cidr[5]} --availability-zone ${subnet_zone[2]} | jq -r ".Subnet.SubnetId")
 
 		internetGatewayId=$(aws ec2 create-internet-gateway | jq -r ".InternetGateway.InternetGatewayId")
 
@@ -22,7 +25,7 @@ then
 
 		return=$(aws ec2 create-route --route-table-id $routeTableId --destination-cidr-block 0.0.0.0/0 --gateway-id $internetGatewayId | jq -r ".Return")
 		
-		aws ec2 create-tags --resources $vpcId $subnet1Id $subnet2Id $subnet3Id $internetGatewayId $routeTableId --tags Key=Name,Value=$1
+		aws ec2 create-tags --resources $vpcId $subnet1Id $subnet2Id $subnet3Id $subnet4Id $subnet5Id $subnet6Id $internetGatewayId $routeTableId --tags Key=Name,Value=$1
 		
 	else
 		echo "exist stack name!"
