@@ -1,13 +1,14 @@
+. ./config.sh
 if [ -n "$1" ]
 then
 	length=$(aws ec2 describe-tags --filters "Name=key,Values=Name" "Name=value,Values=$1" | jq ".Tags|length")
 	if [ $length == 0 ]
 	then
-		vpcId=$(aws ec2 create-vpc --cidr-block 10.0.0.0/16 | jq -r ".Vpc.VpcId")
+		vpcId=$(aws ec2 create-vpc --cidr-block $vpccidr | jq -r ".Vpc.VpcId")
 
-		subnet1Id=$(aws ec2 create-subnet --vpc-id $vpcId --cidr-block 10.0.1.0/24 --availability-zone us-east-1a | jq -r ".Subnet.SubnetId")
-		subnet2Id=$(aws ec2 create-subnet --vpc-id $vpcId --cidr-block 10.0.2.0/24 --availability-zone us-east-1b | jq -r ".Subnet.SubnetId")
-		subnet3Id=$(aws ec2 create-subnet --vpc-id $vpcId --cidr-block 10.0.3.0/24 --availability-zone us-east-1c | jq -r ".Subnet.SubnetId")
+		subnet1Id=$(aws ec2 create-subnet --vpc-id $vpcId --cidr-block ${subnet_cidr[0]} --availability-zone ${subnet_zone[0]} | jq -r ".Subnet.SubnetId")
+		subnet2Id=$(aws ec2 create-subnet --vpc-id $vpcId --cidr-block ${subnet_cidr[1]} --availability-zone ${subnet_zone[1]} | jq -r ".Subnet.SubnetId")
+		subnet3Id=$(aws ec2 create-subnet --vpc-id $vpcId --cidr-block ${subnet_cidr[2]} --availability-zone ${subnet_zone[2]} | jq -r ".Subnet.SubnetId")
 
 		internetGatewayId=$(aws ec2 create-internet-gateway | jq -r ".InternetGateway.InternetGatewayId")
 
