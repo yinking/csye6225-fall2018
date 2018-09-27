@@ -40,3 +40,14 @@ Prerequisite:
 	4) To register open url: localhost:8081/#/student/register
 	5) Go to any browser open url link to login: localhost:8081
 	6) To check current time and all the registered accounts go to url:localhost:8081/#/student/time
+
+5. Run Unit test
+	In file "webapp" run test java file "DemoApplicationTests"
+
+6. Travis CI build link:  https://travis-ci.com/Rohannson/csye6225-fall2018
+
+
+
+
+
+
