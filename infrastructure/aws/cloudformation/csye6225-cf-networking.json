@@ -34,7 +34,7 @@
           "Ref": "myVPC"
         },
         "CidrBlock": "10.0.1.0/24",
-        "AvailabilityZone": "us-east-2a",
+        "AvailabilityZone": "us-east-1a",
         "Tags": [
           {
             "Key": "Name",
@@ -60,7 +60,7 @@
           "Ref": "myVPC"
         },
         "CidrBlock": "10.0.2.0/24",
-        "AvailabilityZone": "us-east-2b",
+        "AvailabilityZone": "us-east-1b",
         "Tags": [
           {
             "Key": "Name",
@@ -86,7 +86,7 @@
           "Ref": "myVPC"
         },
         "CidrBlock": "10.0.3.0/24",
-        "AvailabilityZone": "us-east-2c",
+        "AvailabilityZone": "us-east-1c",
         "Tags": [
           {
             "Key": "Name",
