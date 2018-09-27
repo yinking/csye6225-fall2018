@@ -23,8 +23,8 @@
                     body: JSON.stringify({username: this.username, password: this.password}),
                 }).then(response => {
                     return response.json();
-                }).then(status => {
-                    this.status=status;
+                }).then(data => {
+                    this.status=data.status;
                 });
             }
         }
