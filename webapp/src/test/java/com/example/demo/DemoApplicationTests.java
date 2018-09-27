@@ -9,6 +9,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import static org.junit.Assert.assertNotNull;
+
+
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class DemoApplicationTests {
@@ -23,6 +26,10 @@ public class DemoApplicationTests {
             student.setUsername("test" + i);
             student.setPassword(new BCryptPasswordEncoder().encode("test" + i));
             studentRepository.save(student);
+        }
+        for (int i = 1; i <= 100; i++) {
+            Student student = studentRepository.findByUsername("test"+i);
+            assertNotNull(student);
         }
     }
 }
