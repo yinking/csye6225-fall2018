@@ -17,15 +17,19 @@ then
 
 		aws ec2 attach-internet-gateway --internet-gateway-id $internetGatewayId --vpc-id $vpcId
 
-		routeTableId=$(aws ec2 create-route-table --vpc-id $vpcId | jq -r ".RouteTable.RouteTableId")
+		routeTable1Id=$(aws ec2 create-route-table --vpc-id $vpcId | jq -r ".RouteTable.RouteTableId")
+		routeTable2Id=$(aws ec2 create-route-table --vpc-id $vpcId | jq -r ".RouteTable.RouteTableId")
 
-		association1Id=$(aws ec2 associate-route-table --route-table-id $routeTableId --subnet-id $subnet1Id | jq -r ".AssociationId")
-		association2Id=$(aws ec2 associate-route-table --route-table-id $routeTableId --subnet-id $subnet2Id | jq -r ".AssociationId")
-		association3Id=$(aws ec2 associate-route-table --route-table-id $routeTableId --subnet-id $subnet3Id | jq -r ".AssociationId")
+		association1Id=$(aws ec2 associate-route-table --route-table-id $routeTable1Id --subnet-id $subnet1Id | jq -r ".AssociationId")
+		association2Id=$(aws ec2 associate-route-table --route-table-id $routeTable1Id --subnet-id $subnet2Id | jq -r ".AssociationId")
+		association3Id=$(aws ec2 associate-route-table --route-table-id $routeTable1Id --subnet-id $subnet3Id | jq -r ".AssociationId")
+		association4Id=$(aws ec2 associate-route-table --route-table-id $routeTable2Id --subnet-id $subnet4Id | jq -r ".AssociationId")
+		association5Id=$(aws ec2 associate-route-table --route-table-id $routeTable2Id --subnet-id $subnet5Id | jq -r ".AssociationId")
+		association6Id=$(aws ec2 associate-route-table --route-table-id $routeTable2Id --subnet-id $subnet6Id | jq -r ".AssociationId")
 
-		return=$(aws ec2 create-route --route-table-id $routeTableId --destination-cidr-block 0.0.0.0/0 --gateway-id $internetGatewayId | jq -r ".Return")
+		return=$(aws ec2 create-route --route-table-id $routeTable1Id --destination-cidr-block 0.0.0.0/0 --gateway-id $internetGatewayId | jq -r ".Return")
 		
-		aws ec2 create-tags --resources $vpcId $subnet1Id $subnet2Id $subnet3Id $subnet4Id $subnet5Id $subnet6Id $internetGatewayId $routeTableId --tags Key=Name,Value=$1
+		aws ec2 create-tags --resources $vpcId $subnet1Id $subnet2Id $subnet3Id $subnet4Id $subnet5Id $subnet6Id $internetGatewayId $routeTable1Id $routeTable2Id --tags Key=Name,Value=$1
 		
 	else
 		echo "exist stack name!"
