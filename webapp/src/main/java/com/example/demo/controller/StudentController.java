@@ -26,14 +26,17 @@ public class StudentController {
     }
 
     @PostMapping("/register")
-    public String register(@RequestBody Student student) {
+    public Map<String,String> register(@RequestBody Student student) {
+        Map<String,String> map=new HashMap<>();
         Student existStudent = studentRepository.findByUsername(student.getUsername());
+        System.out.println(student.getPassword());
         if (existStudent == null) {
             student.setPassword(new BCryptPasswordEncoder().encode(student.getPassword()));
             studentRepository.save(student);
-            return "success";
+            map.put("status","success");
         } else {
-            return "exist student";
+            map.put("status","exist student");
         }
+        return map;
     }
 }
