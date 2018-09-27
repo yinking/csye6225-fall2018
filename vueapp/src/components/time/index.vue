@@ -1,9 +1,13 @@
 <template>
     <div>
+        Date:
+        {{date}}
+        <br/>
         Students:
         <ul>
             <li v-for="student in students" :key="student.id">
-                {{student.username}}
+                name:{{student.username}}
+                password:{{student.password}}
             </li>
         </ul>
     </div>
@@ -12,14 +16,15 @@
 <script>
     export default {
         data() {
-            return {students: []}
+            return {students: [], date: null}
         },
         mounted() {
             fetch('http://localhost:8080/student', {credentials: 'include'})
                 .then(response => {
                     return response.json();
-                }).then(students => {
-                this.students = students;
+                }).then(data => {
+                this.date = data.date;
+                this.students = data.students;
             });
         }
     }
