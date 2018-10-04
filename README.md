@@ -10,22 +10,22 @@ Yu Fang       :fang.yu1@husky.neu.edu
 
 Prerequisite:
 	
-	1.Have postgresql-10 installed
-	2.Find file pg_hba.conf in directory: admin:///var/lib/pgsql/10/data
+	1) Have postgresql-10 installed
+	2) Find file pg_hba.conf in directory: admin:///var/lib/pgsql/10/data
 	  make changes to the last 11 lines: change all the content "METHOD" catagory into "trust"
 
 1. Create database
 
 	Entering psql command line
-	1)run: systemctl restart postgresql-10 in terminal
-	2)run: sudo su - postgres
-	3)run: psql
+	1) run: systemctl restart postgresql-10 in terminal
+	2) run: sudo su - postgres
+	3) run: psql
 
 	Checking current database
-	1)run: \l
-	2)run: create database db1; (name should be consistent with db1)
-	3)run: \l (check if created successfully)
-	4)run: \q (quit psql command)
+	1) run: \l
+	2) run: create database db1; (name should be consistent with db1)
+	3) run: \l (check if created successfully)
+	4) run: \q (quit psql command)
 
 	run: exit (logout)
 
@@ -48,14 +48,26 @@ Prerequisite:
 
 6. Travis CI build link:  https://travis-ci.com/Rohannson/csye6225-fall2018
 
-## Assignment3
+## Assignment31. Create database
 
-1. Run web application (back end)
+1. Create Database
+	Entering psql command line
+	1) run: systemctl restart postgresql-10 in terminal
+	2) run: sudo su - postgres
+	3) run: psql
+
+	Checking current database
+	1) run: \l
+	2) run: create database db2; (name should be consistent with db1)
+	3) run: \l (check if created successfully)
+	4) run: \q (quit psql command
+
+2. Run web application (back end)
 
     1) Open file "webapp" with IDE(Intellij)
 	2) Run project in main, runnable class
 
-2. Open postman application
+3. Open postman application
 
     1) Click the button on the right of new+ button
     2) Import file in directory: /postman/Assignment3.postman_collection.json
