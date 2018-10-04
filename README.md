@@ -48,7 +48,7 @@ Prerequisite:
 
 6. Travis CI build link:  https://travis-ci.com/Rohannson/csye6225-fall2018
 
-## Assignment31. Create database
+## Assignment3. Create database
 
 1. Create Database
 	Entering psql command line
