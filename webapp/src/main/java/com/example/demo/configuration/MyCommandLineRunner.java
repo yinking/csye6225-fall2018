@@ -1,24 +1,40 @@
 package com.example.demo.configuration;
 
-import com.example.demo.entity.Student;
-import com.example.demo.repository.StudentRepository;
+import com.example.demo.entity.Transaction;
+import com.example.demo.entity.User;
+import com.example.demo.repository.TransactionRepository;
+import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 @Component
 public class MyCommandLineRunner implements CommandLineRunner {
 
     @Autowired
-    StudentRepository studentRepository;
+    UserRepository userRepository;
+
+    @Autowired
+    TransactionRepository transactionRepository;
 
     @Override
     public void run(String... args) throws Exception {
-        Student student=new Student();
-        student.setUsername("root");
-        student.setPassword(new BCryptPasswordEncoder().encode("root"));
-        studentRepository.save(student);
+        User user = new User();
+        user.setEmail("root");
+        user.setUsername(user.getEmail());
+        user.setPassword(new BCryptPasswordEncoder().encode("root"));
+        userRepository.save(user);
+        Transaction transaction = new Transaction();
+        transaction.setDescription("coffee");
+        transaction.setMerchant("starbucks");
+        transaction.setAmount(2.69f);
+        transaction.setDate(new Date());
+        transaction.setCategory("food");
+        transaction.setUser(user);
+        transactionRepository.save(transaction);
     }
 
 }
