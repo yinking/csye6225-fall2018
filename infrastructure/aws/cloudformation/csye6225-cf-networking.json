@@ -34,14 +34,7 @@
           "Ref": "myVPC"
         },
         "CidrBlock": "10.0.1.0/24",
-        "AvailabilityZone": {
-          "Fn::Select": [
-            "0",
-            {
-              "Fn::GetAZs": "us-east-1"
-            }
-          ]
-        },
+        "AvailabilityZone": "us-east-1a",
         "Tags": [
           {
             "Key": "Name",
@@ -67,14 +60,7 @@
           "Ref": "myVPC"
         },
         "CidrBlock": "10.0.2.0/24",
-        "AvailabilityZone": {
-          "Fn::Select": [
-            "1",
-            {
-              "Fn::GetAZs": "us-east-1"
-            }
-          ]
-        },
+        "AvailabilityZone": "us-east-1b",
         "Tags": [
           {
             "Key": "Name",
@@ -100,14 +86,7 @@
           "Ref": "myVPC"
         },
         "CidrBlock": "10.0.3.0/24",
-        "AvailabilityZone": {
-          "Fn::Select": [
-            "2",
-            {
-              "Fn::GetAZs": "us-east-1"
-            }
-          ]
-        },
+        "AvailabilityZone": "us-east-1c",
         "Tags": [
           {
             "Key": "Name",
@@ -119,105 +98,6 @@
                     "Ref": "Name"
                   },
                   "subnet3"
-                ]
-              ]
-            }
-          }
-        ]
-      }
-    },
-    "mySubnet4": {
-      "Type": "AWS::EC2::Subnet",
-      "Properties": {
-        "VpcId": {
-          "Ref": "myVPC"
-        },
-        "CidrBlock": "10.0.4.0/24",
-        "AvailabilityZone": {
-          "Fn::Select": [
-            "0",
-            {
-              "Fn::GetAZs": "us-east-1"
-            }
-          ]
-        },
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "subnet4"
-                ]
-              ]
-            }
-          }
-        ]
-      }
-    },
-    "mySubnet5": {
-      "Type": "AWS::EC2::Subnet",
-      "Properties": {
-        "VpcId": {
-          "Ref": "myVPC"
-        },
-        "CidrBlock": "10.0.5.0/24",
-        "AvailabilityZone": {
-          "Fn::Select": [
-            "1",
-            {
-              "Fn::GetAZs": "us-east-1"
-            }
-          ]
-        },
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "subnet5"
-                ]
-              ]
-            }
-          }
-        ]
-      }
-    },
-    "mySubnet6": {
-      "Type": "AWS::EC2::Subnet",
-      "Properties": {
-        "VpcId": {
-          "Ref": "myVPC"
-        },
-        "CidrBlock": "10.0.6.0/24",
-        "AvailabilityZone": {
-          "Fn::Select": [
-            "2",
-            {
-              "Fn::GetAZs": "us-east-1"
-            }
-          ]
-        },
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "subnet6"
                 ]
               ]
             }
@@ -257,7 +137,7 @@
         }
       }
     },
-    "myRouteTable1": {
+    "myRouteTable": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
         "VpcId": {
@@ -281,30 +161,6 @@
         ]
       }
     },
-    "myRouteTable2": {
-      "Type": "AWS::EC2::RouteTable",
-      "Properties": {
-        "VpcId": {
-          "Ref": "myVPC"
-        },
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "private-route-table"
-                ]
-              ]
-            }
-          }
-        ]
-      }
-    },
     "mySubnetRouteTableAssociation1": {
       "Type": "AWS::EC2::SubnetRouteTableAssociation",
       "Properties": {
@@ -312,7 +168,7 @@
           "Ref": "mySubnet1"
         },
         "RouteTableId": {
-          "Ref": "myRouteTable1"
+          "Ref": "myRouteTable"
         }
       }
     },
@@ -323,7 +179,7 @@
           "Ref": "mySubnet2"
         },
         "RouteTableId": {
-          "Ref": "myRouteTable1"
+          "Ref": "myRouteTable"
         }
       }
     },
@@ -334,40 +190,7 @@
           "Ref": "mySubnet3"
         },
         "RouteTableId": {
-          "Ref": "myRouteTable1"
-        }
-      }
-    },
-    "mySubnetRouteTableAssociation4": {
-      "Type": "AWS::EC2::SubnetRouteTableAssociation",
-      "Properties": {
-        "SubnetId": {
-          "Ref": "mySubnet4"
-        },
-        "RouteTableId": {
-          "Ref": "myRouteTable2"
-        }
-      }
-    },
-    "mySubnetRouteTableAssociation5": {
-      "Type": "AWS::EC2::SubnetRouteTableAssociation",
-      "Properties": {
-        "SubnetId": {
-          "Ref": "mySubnet5"
-        },
-        "RouteTableId": {
-          "Ref": "myRouteTable2"
-        }
-      }
-    },
-    "mySubnetRouteTableAssociation6": {
-      "Type": "AWS::EC2::SubnetRouteTableAssociation",
-      "Properties": {
-        "SubnetId": {
-          "Ref": "mySubnet6"
-        },
-        "RouteTableId": {
-          "Ref": "myRouteTable2"
+          "Ref": "myRouteTable"
         }
       }
     },
@@ -375,41 +198,12 @@
       "Type": "AWS::EC2::Route",
       "Properties": {
         "RouteTableId": {
-          "Ref": "myRouteTable1"
+          "Ref": "myRouteTable"
         },
         "DestinationCidrBlock": "0.0.0.0/0",
         "GatewayId": {
           "Ref": "myInternetGateway"
         }
-      }
-    }
-  },
-  "Outputs": {
-    "myVPCOutput": {
-      "Value": {
-        "Ref": "myVPC"
-      },
-      "Export": {
-        "Name": "myVPC"
-      }
-    },
-    "mySubnet1Output": {
-      "Value": {
-        "Ref": "mySubnet1"
-      },
-      "Export": {
-        "Name": "mySubnet1"
-      }
-    },
-    "myAvailabilityZone1Output": {
-      "Value": {
-        "Fn::GetAtt": [
-          "mySubnet1",
-          "AvailabilityZone"
-        ]
-      },
-      "Export": {
-        "Name": "myAvailabilityZone1"
       }
     }
   }
