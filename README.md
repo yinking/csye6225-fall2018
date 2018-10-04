@@ -4,6 +4,8 @@ Zhiyong Zhang :zhang.zhiyo@husky.neu.edu
 Ying Wang     :wang.ying6@husky.neu.edu
 Yu Fang       :fang.yu1@husky.neu.edu
 
+## Assignment2
+
 # To run Web Application
 
 Prerequisite:
@@ -45,6 +47,21 @@ Prerequisite:
 	In file "webapp" run test java file "DemoApplicationTests"
 
 6. Travis CI build link:  https://travis-ci.com/Rohannson/csye6225-fall2018
+
+## Assignment3
+
+1. Run web application (back end)
+
+    1) Open file "webapp" with IDE(Intellij)
+	2) Run project in main, runnable class
+
+2. Open postman application
+
+    1) Click the button on the right of new+ button
+    2) Import file in directory: /postman/Assignment3.postman_collection.json
+    3) After import, Under user folder "POST" will create new users, and "GET" will return existing users. "Body" part of the post can input username and    password
+    4) Under Transaction folder, "GET" would be part will return existing transactions, "POST" would new transaction, "DEL" can delete a transaction, and "PUT" can change the content of an existing transaction
+    5) To determin which transaction to operate, change the URL content to the transaction ID to be ultered or deleted and the ID would be added to the end of transaction.
 
 
 
