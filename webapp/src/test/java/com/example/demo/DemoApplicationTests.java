@@ -1,7 +1,7 @@
 package com.example.demo;
 
-import com.example.demo.entity.Student;
-import com.example.demo.repository.StudentRepository;
+import com.example.demo.entity.User;
+import com.example.demo.repository.UserRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,18 +17,18 @@ import static org.junit.Assert.assertNotNull;
 public class DemoApplicationTests {
 
     @Autowired
-    StudentRepository studentRepository;
+    UserRepository studentRepository;
 
     @Test
     public void contextLoads() {
         for (int i = 1; i <= 100; i++) {
-            Student student = new Student();
+            User student = new User();
             student.setUsername("test" + i);
             student.setPassword(new BCryptPasswordEncoder().encode("test" + i));
             studentRepository.save(student);
         }
         for (int i = 1; i <= 100; i++) {
-            Student student = studentRepository.findByUsername("test"+i);
+            User student = studentRepository.findByUsername("test"+i);
             assertNotNull(student);
         }
     }
