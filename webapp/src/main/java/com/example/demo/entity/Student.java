@@ -1,18 +1,16 @@
 package com.example.demo.entity;
 
 import javax.persistence.*;
-import java.io.Serializable;
+import java.util.List;
 
 @Entity
-@Table(name = "Users")
-public class User implements Serializable {
+public class Student {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String username;
     private String password;
-    private String email;
 
     public Long getId() {
         return id;
@@ -36,13 +34,5 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 }
