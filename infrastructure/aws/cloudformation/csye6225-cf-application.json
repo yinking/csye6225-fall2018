@@ -185,7 +185,7 @@
                   {
                     "Ref": "Name"
                   },
-                  "dynamoDBTable"
+                  "DynamoDBTable"
                 ]
               ]
             }
@@ -263,7 +263,17 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": "RDSDBInstance"
+            "Value": {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Ref": "Name"
+                  },
+                  "RDSDBInstance"
+                ]
+              ]
+            }
           }
         ]
       }
