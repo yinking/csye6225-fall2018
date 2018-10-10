@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/transaction")
@@ -37,10 +39,11 @@ public class TransactionController {
     }
 
     @PutMapping("/{id}")
-    public Transaction put(@RequestBody Transaction transaction, @PathVariable Long id, Authentication authentication) {
+    public Transaction put(@RequestBody Transaction transaction, @PathVariable UUID id, Authentication authentication, HttpServletResponse response) {
         User user = getAuthenticationUser(authentication);
         Transaction oldTransaction = transactionRepository.findByIdAndUser(id, user);
         if (oldTransaction == null) {
+            response.setStatus(403);
             return null;
         }
         transaction.setId(id);
@@ -50,10 +53,12 @@ public class TransactionController {
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id, Authentication authentication) {
+    public void delete(@PathVariable UUID id, Authentication authentication, HttpServletResponse response) {
         User user = getAuthenticationUser(authentication);
         Transaction transaction = transactionRepository.findByIdAndUser(id, user);
-        if (transaction != null) {
+        if (transaction == null) {
+            response.setStatus(403);
+        } else {
             transactionRepository.delete(transaction);
         }
     }

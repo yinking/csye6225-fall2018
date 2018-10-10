@@ -44,6 +44,9 @@
         "SecurityGroupIds": [
           {
             "Ref": "csye6225webapp"
+          },
+          {
+            "Ref": "csye6225rds"
           }
         ],
         "Volumes": [
@@ -75,7 +78,7 @@
     "csye6225webapp": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "Allow http to client host",
+        "GroupDescription": "csye6225webapp",
         "VpcId": {
           "Fn::ImportValue": "myVPC"
         },
@@ -97,7 +100,34 @@
             "FromPort": "443",
             "ToPort": "443",
             "CidrIp": "0.0.0.0/0"
-          },
+          }
+        ],
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Ref": "Name"
+                  },
+                  "EC2SecurityGroup1"
+                ]
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "csye6225rds": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "csye6225rds",
+        "VpcId": {
+          "Fn::ImportValue": "myVPC"
+        },
+        "SecurityGroupIngress": [
           {
             "IpProtocol": "tcp",
             "FromPort": "5432",
@@ -115,39 +145,7 @@
                   {
                     "Ref": "Name"
                   },
-                  "EC2SecurityGroup"
-                ]
-              ]
-            }
-          }
-        ]
-      }
-    },
-    "csye6225rds": {
-      "Type": "AWS::RDS::DBSecurityGroup",
-      "Properties": {
-        "EC2VpcId": {
-          "Fn::ImportValue": "myVPC"
-        },
-        "DBSecurityGroupIngress": [
-          {
-            "EC2SecurityGroupId": {
-              "Ref": "csye6225webapp"
-            }
-          }
-        ],
-        "GroupDescription": "Frontend Access",
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "DBSecurityGroup"
+                  "EC2SecurityGroup2"
                 ]
               ]
             }
