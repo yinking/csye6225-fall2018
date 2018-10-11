@@ -1,21 +1,18 @@
 package com.example.demo.controller;
 
+import com.example.demo.configuration.AmazonClient;
 import com.example.demo.entity.Attachment;
 import com.example.demo.entity.Transaction;
 import com.example.demo.entity.User;
 import com.example.demo.repository.AttachmentRepository;
 import com.example.demo.repository.TransactionRepository;
 import com.example.demo.repository.UserRepository;
-import com.example.demo.s3.services.S3Services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.servlet.MultipartConfigFactory;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.MultipartConfigElement;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
@@ -26,33 +23,11 @@ import java.util.UUID;
 @RequestMapping("/transaction/{id}/attachments")
 public class AttachmentController {
 
+    @Value("${localLocation}")
+    private String localLocation;
 
     @Autowired
-    S3Services s3Services;
-
-//    @Value("${jsa.s3.uploadfile}")
-//    private String uploadFilePath;
-
-    @Value("${jsa.s3.key}")
-    private String downloadKey;
-
-
-//    @Override
-//    public void run(String... args) throws Exception {
-//        System.out.println("---------------- START UPLOAD FILE ----------------");
-//        s3Services.uploadFile("a.py", uploadFilePath);
-//        System.out.println("---------------- START DOWNLOAD FILE ----------------");
-//        s3Services.downloadFile(downloadKey);
-//    }
-
-
-    @Bean
-    MultipartConfigElement multipartConfigElement() {
-        MultipartConfigFactory factory = new MultipartConfigFactory();
-        //   /Users/wangying/Desktop/key
-        factory.setLocation("/Users/wangying/ying/6225/a4/");
-        return factory.createMultipartConfig();
-    }
+    private AmazonClient amazonClient;
 
     @Autowired
     UserRepository userRepository;
@@ -88,26 +63,18 @@ public class AttachmentController {
         Attachment attachment = new Attachment();
         attachment.setTransaction(transaction);
         attachmentRepository.save(attachment);
-        String fileName = file.getOriginalFilename();
-        String url = attachment.getId() + fileName.substring(fileName.lastIndexOf("."));
-        attachment.setUrl(url);
-        attachmentRepository.save(attachment);
+        String originalFilename = file.getOriginalFilename();
+        String fileName = attachment.getId() + originalFilename.substring(originalFilename.lastIndexOf("."));
+        File localFile = new File(localLocation + fileName);
         try {
-            File localFile=new File(url);
             file.transferTo(localFile);
-            s3Services.uploadFile(url, multipartConfigElement().getLocation()+url);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        String url = this.amazonClient.uploadFile(localFile, fileName);
+        attachment.setUrl(url);
+        attachmentRepository.save(attachment);
         return attachment;
-    }
-
-
-    public File multipartToFile(MultipartFile multipart) throws IllegalStateException, IOException {
-        File convFile = new File(multipart.getOriginalFilename());
-        multipart.transferTo(convFile);
-        return convFile;
     }
 
     @PutMapping("/{idAttachments}")
@@ -118,16 +85,19 @@ public class AttachmentController {
             response.setStatus(403);
             return null;
         }
-        new File(multipartConfigElement().getLocation() + attachment.getUrl()).delete();
-        String fileName = file.getOriginalFilename();
-        String url = attachment.getId() + fileName.substring(fileName.lastIndexOf("."));
-        attachment.setUrl(url);
-        attachmentRepository.save(attachment);
+        String oldFileName = amazonClient.deleteFile(attachment.getUrl());
+        new File(localLocation + oldFileName).delete();
+        String originalFilename = file.getOriginalFilename();
+        String fileName = attachment.getId() + originalFilename.substring(originalFilename.lastIndexOf("."));
+        File localFile = new File(localLocation + fileName);
         try {
-            file.transferTo(new File(url));
+            file.transferTo(localFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        String url = this.amazonClient.uploadFile(localFile, fileName);
+        attachment.setUrl(url);
+        attachmentRepository.save(attachment);
         return attachment;
     }
 
@@ -138,8 +108,9 @@ public class AttachmentController {
         if (attachment == null) {
             response.setStatus(403);
         } else {
+            String oldFileName = amazonClient.deleteFile(attachment.getUrl());
+            new File(localLocation + oldFileName).delete();
             attachmentRepository.delete(attachment);
-            new File(multipartConfigElement().getLocation() + attachment.getUrl()).delete();
         }
     }
 }

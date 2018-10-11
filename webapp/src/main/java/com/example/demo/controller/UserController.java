@@ -17,6 +17,9 @@ public class UserController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+
     @GetMapping
     public List<User> get() {
         return userRepository.findAll();
@@ -29,7 +32,7 @@ public class UserController {
             User existStudent = userRepository.findByEmail(user.getEmail());
             if (existStudent == null) {
                 user.setUsername(user.getEmail());
-                user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
+                user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
                 userRepository.save(user);
                 return user;
             }
