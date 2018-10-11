@@ -18,16 +18,16 @@ public class AmazonClient {
 
     private AmazonS3 s3Client;
 
-    @Value("${aws.endpointUrl}")
+    @Value("${awsEndpointUrl}")
     private String endpointUrl;
 
-    @Value("${aws.bucketName}")
+    @Value("${awsBucketName}")
     private String bucketName;
 
-    @Value("${aws.accessKeyId}")
+    @Value("${awsAccessKeyId}")
     private String accessKeyId;
 
-    @Value("${aws.secretKey}")
+    @Value("${awsSecretKey}")
     private String secretKey;
 
     @Bean
