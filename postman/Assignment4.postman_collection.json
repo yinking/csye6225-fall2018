@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "8628e791-1fb6-42db-b03f-090abb384e3d",
-		"name": "Assignment3",
+		"name": "Assignment4",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -16,7 +16,7 @@
 							"basic": [
 								{
 									"key": "password",
-									"value": "",
+									"value": "root",
 									"type": "string"
 								},
 								{
@@ -59,7 +59,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"email\":\"a@a.com\",\n\t\"password\":\"a\"\n}"
+							"raw": "{\n\t\"email\":\"a@a.a\",\n\t\"password\":\"a\"\n}"
 						},
 						"url": {
 							"raw": "{{server}}/user/register",
@@ -121,10 +121,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
+						"body": {},
 						"url": {
 							"raw": "{{server}}/transaction",
 							"host": [
@@ -284,13 +281,13 @@
 						"header": [],
 						"body": {},
 						"url": {
-							"raw": "{{server}}/transaction/b6444374-7fcb-4432-bc50-dfda11f89212/attachments",
+							"raw": "{{server}}/transaction/d7fb11bf-245e-41a3-aab6-141b60596797/attachments",
 							"host": [
 								"{{server}}"
 							],
 							"path": [
 								"transaction",
-								"b6444374-7fcb-4432-bc50-dfda11f89212",
+								"d7fb11bf-245e-41a3-aab6-141b60596797",
 								"attachments"
 							]
 						}
@@ -332,13 +329,13 @@
 							]
 						},
 						"url": {
-							"raw": "{{server}}/transaction/b6444374-7fcb-4432-bc50-dfda11f89212/attachments",
+							"raw": "{{server}}/transaction/d7fb11bf-245e-41a3-aab6-141b60596797/attachments",
 							"host": [
 								"{{server}}"
 							],
 							"path": [
 								"transaction",
-								"b6444374-7fcb-4432-bc50-dfda11f89212",
+								"d7fb11bf-245e-41a3-aab6-141b60596797",
 								"attachments"
 							]
 						}
@@ -375,15 +372,15 @@
 							]
 						},
 						"url": {
-							"raw": "{{server}}/transaction/b6444374-7fcb-4432-bc50-dfda11f89212/attachments/6c61e6bc-65ae-4a58-952a-79ccbbecc42d",
+							"raw": "{{server}}/transaction/d7fb11bf-245e-41a3-aab6-141b60596797/attachments/1bb48f38-d463-4c51-ab50-30ca238f82e4",
 							"host": [
 								"{{server}}"
 							],
 							"path": [
 								"transaction",
-								"b6444374-7fcb-4432-bc50-dfda11f89212",
+								"d7fb11bf-245e-41a3-aab6-141b60596797",
 								"attachments",
-								"6c61e6bc-65ae-4a58-952a-79ccbbecc42d"
+								"1bb48f38-d463-4c51-ab50-30ca238f82e4"
 							]
 						}
 					},
@@ -411,15 +408,15 @@
 						"header": [],
 						"body": {},
 						"url": {
-							"raw": "{{server}}/transaction/b6444374-7fcb-4432-bc50-dfda11f89212/attachments/6c61e6bc-65ae-4a58-952a-79ccbbecc42d",
+							"raw": "{{server}}/transaction/d7fb11bf-245e-41a3-aab6-141b60596797/attachments/def9b4d9-2d8c-4e87-8111-eb56b1af6cf0",
 							"host": [
 								"{{server}}"
 							],
 							"path": [
 								"transaction",
-								"b6444374-7fcb-4432-bc50-dfda11f89212",
+								"d7fb11bf-245e-41a3-aab6-141b60596797",
 								"attachments",
-								"6c61e6bc-65ae-4a58-952a-79ccbbecc42d"
+								"def9b4d9-2d8c-4e87-8111-eb56b1af6cf0"
 							]
 						}
 					},

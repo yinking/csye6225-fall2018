@@ -18,6 +18,9 @@ public class MyCommandLineRunner implements CommandLineRunner {
     UserRepository userRepository;
 
     @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
     TransactionRepository transactionRepository;
 
     @Override
@@ -25,7 +28,7 @@ public class MyCommandLineRunner implements CommandLineRunner {
         User user = new User();
         user.setEmail("root");
         user.setUsername(user.getEmail());
-        user.setPassword(new BCryptPasswordEncoder().encode("root"));
+        user.setPassword(bCryptPasswordEncoder.encode("root"));
         userRepository.save(user);
         Transaction transaction = new Transaction();
         transaction.setDescription("coffee");
