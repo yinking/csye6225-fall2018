@@ -1,0 +1,58 @@
+{
+	"AWSTemplateFormatVersion" : "2010-09-09",
+	"Parameters": {
+    	"Name": {
+    		"Type": "String" 
+    	},
+    	"Domain": {
+      		"Type": "String"
+    	}
+
+  	},
+    "Resources" : {
+        "NetworkStack" : {
+	       "Type" : "AWS::CloudFormation::Stack",
+	       "Properties" : {
+	          "TemplateURL" : "https://s3.us-east-2.amazonaws.com/csye6225-fall2018-fangyu1.me/csye6225-cf-networking.json",
+	          "Parameters" : {
+	          	"Name" : { 
+	          		"Fn::Join": [
+	          			"", 
+	          			[ 
+	          				{ "Ref": "Name" }, 
+	          				"NetworkNestedStack" 
+	          			]
+	          		] 
+	          	}
+	          },
+              "TimeoutInMinutes" : "60"
+	       }
+        },
+        "ApplicationStack" : {
+	       "Type" : "AWS::CloudFormation::Stack",
+	       "Properties" : {
+	          "TemplateURL" : "https://s3.us-east-2.amazonaws.com/csye6225-fall2018-fangyu1.me/csye6225-cf-application.json",
+	          "Parameters" : {
+	          	"Name" : { 
+	          		"Fn::Join": [
+	          			"", 
+	          			[ 
+	          				{ "Ref": "Name" }, 
+	          				"ApplicatNestedStack" 
+	          			]
+	          		] 
+	          	},
+	          	"Domain" : { "Ref": "Domain" }
+	          },
+              "TimeoutInMinutes" : "60"
+	       },
+	       "DependsOn" : "NetworkStack"
+        }
+    },
+	"Outputs": {
+       "StackRef": {"Value": { "Ref" : "ApplicationStack"}},
+       "OutputFromNestedStack" : {
+             "Value" : { "Fn::GetAtt" : [ "NetworkStack", "Outputs.myVPCOutput" ] }
+       }
+    }
+}
