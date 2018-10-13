@@ -52,7 +52,7 @@ Prerequisite:
 
 1. Create Database
 	Entering psql command line
-	1) run: systemctl restart postgresql-10 in terminal
+	1) run: systemctl restart postgresql-10
 	2) run: sudo su - postgres
 	3) run: psql
 
@@ -60,7 +60,7 @@ Prerequisite:
 	1) run: \l
 	2) run: create database db2; (name should be consistent with db1)
 	3) run: \l (check if created successfully)
-	4) run: \q (quit psql command
+	4) run: \q (quit psql command)
 
 2. Run web application (back end)
 
