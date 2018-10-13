@@ -2,9 +2,6 @@
   "Parameters": {
     "Name": {
       "Type": "String"
-    },
-    "Domain": {
-      "Type": "String"
     }
   },
   "Resources": {
@@ -197,17 +194,7 @@
     "myS3Bucket": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
-        "BucketName": {
-          "Fn::Join": [
-            "",
-            [
-              {
-                "Ref": "Domain"
-              },
-              ".csye6225.com"
-            ]
-          ]
-        },
+        "BucketName": "csye6225-fall2018-zhangzhiyo.me.csye6225.com",
         "Tags": [
           {
             "Key": "Name",
