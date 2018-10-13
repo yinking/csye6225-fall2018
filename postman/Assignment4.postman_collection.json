@@ -1,12 +1,12 @@
 {
 	"info": {
 		"_postman_id": "8628e791-1fb6-42db-b03f-090abb384e3d",
-		"name": "Assignment3",
+		"name": "Assignment4",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
-			"name": "user",
+			"name": "user/register",
 			"item": [
 				{
 					"name": "/user",
@@ -45,7 +45,7 @@
 					"response": []
 				},
 				{
-					"name": "/user",
+					"name": "/user/register",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -59,19 +59,42 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"email\":\"a\",\n\t\"password\":\"a\"\n}"
+							"raw": "{\n\t\"email\":\"a@a.a\",\n\t\"password\":\"a\"\n}"
 						},
 						"url": {
-							"raw": "{{server}}/user",
+							"raw": "{{server}}/user/register",
 							"host": [
 								"{{server}}"
 							],
 							"path": [
-								"user"
+								"user",
+								"register"
 							]
 						}
 					},
 					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "f90779d6-6810-4f3f-ac4c-0e927b3eea35",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "dc6bbf03-5f73-48bf-a17c-9b17d9577cab",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
@@ -98,10 +121,7 @@
 						},
 						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
+						"body": {},
 						"url": {
 							"raw": "{{server}}/transaction",
 							"host": [
@@ -229,6 +249,174 @@
 							"path": [
 								"transaction",
 								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "attachments",
+			"item": [
+				{
+					"name": "/transaction/{id}/attachments",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "root",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "root",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{server}}/transaction/d7fb11bf-245e-41a3-aab6-141b60596797/attachments",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"transaction",
+								"d7fb11bf-245e-41a3-aab6-141b60596797",
+								"attachments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/transaction/{id}/attachments",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "root",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "root",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{server}}/transaction/d7fb11bf-245e-41a3-aab6-141b60596797/attachments",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"transaction",
+								"d7fb11bf-245e-41a3-aab6-141b60596797",
+								"attachments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/transaction/{id}/attachments/{idAttachments}",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "root",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "root",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{server}}/transaction/d7fb11bf-245e-41a3-aab6-141b60596797/attachments/1bb48f38-d463-4c51-ab50-30ca238f82e4",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"transaction",
+								"d7fb11bf-245e-41a3-aab6-141b60596797",
+								"attachments",
+								"1bb48f38-d463-4c51-ab50-30ca238f82e4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/transaction/{id}/attachments/{idAttachments}",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "root",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "root",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "{{server}}/transaction/d7fb11bf-245e-41a3-aab6-141b60596797/attachments/def9b4d9-2d8c-4e87-8111-eb56b1af6cf0",
+							"host": [
+								"{{server}}"
+							],
+							"path": [
+								"transaction",
+								"d7fb11bf-245e-41a3-aab6-141b60596797",
+								"attachments",
+								"def9b4d9-2d8c-4e87-8111-eb56b1af6cf0"
 							]
 						}
 					},
