@@ -3,7 +3,10 @@
     "Name": {
       "Type": "String"
     },
-    "Domain": {
+    "domain": {
+      "Type": "String"
+    },
+    "accountNumber": {
       "Type": "String"
     }
   },
@@ -37,6 +40,9 @@
     "myEC2Instance": {
       "Type": "AWS::EC2::Instance",
       "Properties": {
+        "IamInstanceProfile": {
+          "Fn::ImportValue": "myIAMInstanceProfile"
+        },
         "ImageId": "ami-9887c6e7",
         "InstanceType": "t2.micro",
         "DisableApiTermination": "false",
@@ -102,7 +108,12 @@
                 "echo '[Install]' >> tomcat.service",
                 "echo 'WantedBy=multi-user.target' >> tomcat.service",
                 "systemctl daemon-reload",
-                "systemctl start tomcat.service"
+                "systemctl start tomcat.service",
+                "cd ~",
+                "wget https://aws-codedeploy-us-east-1.s3.amazonaws.com/latest/install",
+                "chmod +x ./install",
+                "./install auto",
+                "service codedeploy-agent start"
               ]
             ]
           }
@@ -249,9 +260,9 @@
             "",
             [
               {
-                "Ref": "Domain"
+                "Ref": "domain"
               },
-              ".TLD.csye6225.com"
+              ".csye6225.com"
             ]
           ]
         },
@@ -271,6 +282,57 @@
             }
           }
         ]
+      }
+    },
+    "myWebapp": {
+      "Type": "AWS::CodeDeploy::Application",
+      "Properties": {
+        "ApplicationName": "myWebapp"
+      }
+    },
+    "myCodeDeployDeploymentGroup": {
+      "Type": "AWS::CodeDeploy::DeploymentGroup",
+      "Properties": {
+        "ApplicationName": {
+          "Ref": "myWebapp"
+        },
+        "DeploymentConfigName": "CodeDeployDefault.OneAtATime",
+        "DeploymentGroupName": {
+          "Ref": "myWebapp"
+        },
+        "DeploymentStyle": {
+          "DeploymentType": "IN_PLACE",
+          "DeploymentOption": "WITHOUT_TRAFFIC_CONTROL"
+        },
+        "Ec2TagFilters": [
+          {
+            "Key": "Name",
+            "Type": "KEY_AND_VALUE",
+            "Value": {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Ref": "Name"
+                  },
+                  "EC2Instance"
+                ]
+              ]
+            }
+          }
+        ],
+        "ServiceRoleArn": {
+          "Fn::Join": [
+            "",
+            [
+              "arn:aws:iam::",
+              {
+                "Ref": "accountNumber"
+              },
+              ":role/CodeDeployServiceRole"
+            ]
+          ]
+        }
       }
     }
   }
