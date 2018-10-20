@@ -42,17 +42,17 @@ deploy:
   skip_cleanup: true
   access_key_id: $access_key_id
   secret_access_key: $secret_access_key
-# on:
-#   branch: master
-- provider: codedeploy
-  access_key_id: $access_key_id
-  bucket: $code_deploy_s3_bucket
-  key: csye6225-web-app-${TRAVIS_JOB_NUMBER}.zip
-  bundle_type: zip
-  application: $application
-  deployment_group: $deployment_group
-  region: us-east-1
-  secret_access_key: $secret_access_key
-  wait-until-deployed: true
-#     on:
-#       branch: master
+  on:
+  branch: Assignment5
+  - provider: codedeploy
+    access_key_id: $access_key_id
+    bucket: $code_deploy_s3_bucket
+    key: csye6225-web-app-${TRAVIS_JOB_NUMBER}.zip
+    bundle_type: zip
+    application: $application
+    deployment_group: $deployment_group
+    region: us-east-1
+    secret_access_key: $secret_access_key
+    wait-until-deployed: true
+    on:
+    branch: Assignment5
