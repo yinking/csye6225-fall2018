@@ -15,6 +15,7 @@ services:
 script:
 - cd webapp
 - mvn clean package
+- cd ..
 
 after_success:
 - pwd
