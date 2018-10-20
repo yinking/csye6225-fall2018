@@ -136,6 +136,42 @@
         }
       }
     },
+    "travis": {
+      "Type": "AWS::IAM::User",
+      "Properties": {
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:iam::",
+                {
+                  "Ref": "accountNumber"
+                },
+                ":policy/Travis-Upload-To-S3"
+              ]
+            ]
+          },
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:aws:iam::",
+                {
+                  "Ref": "accountNumber"
+                },
+                ":policy/Travis-Code-Deploy"
+              ]
+            ]
+          }
+        ],
+        "UserName": "travis"
+      },
+      "DependsOn": [
+        "TravisUploadToS3",
+        "TravisCodeDeploy"
+      ]
+    },
     "CodeDeployEC2ServiceRole": {
       "Type": "AWS::IAM::Role",
       "Properties": {
