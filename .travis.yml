@@ -10,11 +10,16 @@ script:
   - pwd
   - cd webapp
   - mvn clean package
-  - cd build/libs
-  - ls -al
-  - cd ../../..
-  - pwd
-  - ls -al
+  - sudo su - postgres
+  - psql
+  - \l
+#  - \q
+#  - exit
+#  - cd build/libs
+#  - ls -al
+#  - cd ../../..
+#  - pwd
+#  - ls -al
 
 after_success:
   - pwd
