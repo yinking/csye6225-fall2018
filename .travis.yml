@@ -8,8 +8,8 @@ install: true
 
 script:
 - pwd
-- cd webapp
-- mvn clean package
+#- cd webapp
+#- mvn clean package
 - sudo su - postgres
 - psql
 - \l
