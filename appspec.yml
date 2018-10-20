@@ -2,16 +2,16 @@ version: 0.0
 os: linux
 
 files:             
-  - source: ./webapp/build/libs/ROOT.war
+  - source: ./webapp/target/demo-0.0.1-SNAPSHOT.jar
     destination: /opt/tomcat/webapps
 
 hooks:
   AfterInstall:
-   - location: ./infrastructure/aws/codedeploy/afterInstall.sh
+   - location: ./afterInstall.sh
      timeout: 180
      runas: centos
   ApplicationStart:
-   - location: ./infrastructure/aws/codedeploy/applicationStart.sh
+   - location: ./applicationStart.sh
      timeout: 180
      runas: centos
   # ValidateService:
