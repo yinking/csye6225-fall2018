@@ -7,7 +7,7 @@ sudo: false
 install: true
 
 script:
-- pwd
+#- pwd
 #- cd webapp
 #- mvn clean package
 - sudo su - postgres
