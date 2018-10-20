@@ -10,7 +10,8 @@ services:
 - postgresql
 
 before_script:
-- psql -c 'drop database if exists db5;create database db5;' -U postgres
+- psql -c 'drop database if exists db5;' -U postgres
+- psql -c 'create database db5;' -U postgres
 
 script:
 - pwd
