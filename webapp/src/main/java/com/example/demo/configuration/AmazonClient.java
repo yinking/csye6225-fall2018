@@ -33,7 +33,7 @@ public class AmazonClient {
     @Bean
     public AmazonS3 s3client() {
         BasicAWSCredentials creds = new BasicAWSCredentials(this.accessKeyId, this.secretKey);
-        s3Client = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(creds)).build();
+        s3Client = AmazonS3ClientBuilder.standard().withRegion("us-east-1").withCredentials(new AWSStaticCredentialsProvider(creds)).build();
         return s3Client;
     }
 

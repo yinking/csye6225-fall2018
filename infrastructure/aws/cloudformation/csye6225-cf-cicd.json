@@ -47,7 +47,10 @@
               ]
             }
           ]
-        }
+        },
+        "Users": [
+          "travis"
+        ]
       }
     },
     "TravisCodeDeploy": {
@@ -133,7 +136,10 @@
               ]
             }
           ]
-        }
+        },
+        "Users": [
+          "travis"
+        ]
       }
     },
     "CodeDeployEC2ServiceRole": {

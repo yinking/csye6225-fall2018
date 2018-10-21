@@ -39,6 +39,7 @@
     },
     "myEC2Instance": {
       "Type": "AWS::EC2::Instance",
+      "DependsOn": "myRDSDBInstance",
       "Properties": {
         "IamInstanceProfile": {
           "Fn::ImportValue": "myIAMInstanceProfile"
@@ -107,6 +108,31 @@
                 "echo 'Restart=always' >> tomcat.service",
                 "echo '[Install]' >> tomcat.service",
                 "echo 'WantedBy=multi-user.target' >> tomcat.service",
+                "cd /",
+                "cd /opt/tomcat/bin",
+                "touch setenv.sh",
+                "echo 'export JAVA_OPTS='-Dlocal_location=/home/centos/'' >> setenv.sh",
+                "echo 'export JAVA_OPTS='-Dend_point_url=https://s3.us-east-1.amazonaws.com'' >> setenv.sh",
+                "echo 'export JAVA_OPTS='-Daccess_key_id=AKIAJHQBAEECVNNBNMVA'' >> setenv.sh",
+                "echo 'export JAVA_OPTS='-Dsecret_access_key=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'' >> setenv.sh",
+                "echo 'export JAVA_OPTS='-Ds3_bucket=csye6225-fall2018-zhangzhiyo.me.csye6225.com'' >> setenv.sh",
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "echo 'export JAVA_OPTS='-Dspring_datasource_url=jdbc:postgresql://",
+                      {
+                        "Fn::GetAtt": [
+                          "myRDSDBInstance",
+                          "Endpoint.Address"
+                        ]
+                      },
+                      ":5432/csye6225'' >> setenv.sh"
+                    ]
+                  ]
+                },
+                "echo 'export JAVA_OPTS='-Dspring_datasource_username=csye6225master'' >> setenv.sh",
+                "echo 'export JAVA_OPTS='-Dspring_datasource_password=csye6225password'' >> setenv.sh",
                 "systemctl daemon-reload",
                 "systemctl start tomcat.service",
                 "cd ~",
@@ -193,7 +219,9 @@
             "IpProtocol": "tcp",
             "FromPort": "5432",
             "ToPort": "5432",
-            "CidrIp": "0.0.0.0/0"
+            "SourceSecurityGroupId": {
+              "Ref": "csye6225webapp"
+            }
           }
         ],
         "Tags": [
@@ -291,6 +319,7 @@
       }
     },
     "myCodeDeployDeploymentGroup": {
+      "DependsOn": "myEC2Instance",
       "Type": "AWS::CodeDeploy::DeploymentGroup",
       "Properties": {
         "ApplicationName": {
@@ -333,6 +362,69 @@
             ]
           ]
         }
+      }
+    },
+    "myRDSDBSubnetGroup": {
+      "Type": "AWS::RDS::DBSubnetGroup",
+      "Properties": {
+        "DBSubnetGroupDescription": "description",
+        "SubnetIds": {
+          "Fn::Split": [
+            ",",
+            {
+              "Fn::ImportValue": "mySubnets"
+            }
+          ]
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Ref": "Name"
+                  },
+                  "RDSDBSubnetGroup"
+                ]
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "myRDSDBInstance": {
+      "Type": "AWS::RDS::DBInstance",
+      "Properties": {
+        "AllocatedStorage": "100",
+        "DBName": "csye6225",
+        "DBInstanceClass": "db.t2.medium",
+        "DBInstanceIdentifier": "csye6225-spring2018",
+        "MultiAZ": "false",
+        "Engine": "postgres",
+        "MasterUsername": "csye6225master",
+        "MasterUserPassword": "csye6225password",
+        "DBSubnetGroupName": {
+          "Ref": "myRDSDBSubnetGroup"
+        },
+        "PubliclyAccessible": "false",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Fn::Join": [
+                "",
+                [
+                  {
+                    "Ref": "Name"
+                  },
+                  "RDSDBInstance"
+                ]
+              ]
+            }
+          }
+        ]
       }
     }
   }
