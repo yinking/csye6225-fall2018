@@ -120,7 +120,7 @@
                   "Fn::Join": [
                     "",
                     [
-                      "echo 'export JAVA_OPTS='-Dspring_datasource_url=",
+                      "echo 'export JAVA_OPTS='-Dspring_datasource_url=jdbc:postgresql://",
                       {
                         "Fn::GetAtt": [
                           "myRDSDBInstance",
