@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.User;
-import com.example.demo.exception.MyException;
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -21,9 +20,6 @@ public class UserController {
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    @Autowired
-    MyException myException;
-
     @GetMapping
     public List<User> get() {
         return userRepository.findAll();
@@ -41,7 +37,7 @@ public class UserController {
                 return user;
             }
         }
-        myException.sendError(403, "User exist", response);
+        response.setStatus(403);
         return null;
     }
 }

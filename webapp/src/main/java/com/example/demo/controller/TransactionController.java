@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Transaction;
 import com.example.demo.entity.User;
-import com.example.demo.exception.MyException;
 import com.example.demo.repository.TransactionRepository;
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +21,6 @@ public class TransactionController {
 
     @Autowired
     TransactionRepository transactionRepository;
-
-    @Autowired
-    MyException myException;
 
     private User getAuthenticationUser(Authentication authentication) {
         return userRepository.findByUsername(authentication.getName());
@@ -47,7 +43,7 @@ public class TransactionController {
         User user = getAuthenticationUser(authentication);
         Transaction oldTransaction = transactionRepository.findByIdAndUser(id, user);
         if (oldTransaction == null) {
-            myException.sendError(403, "Transaction not exist", response);
+            response.setStatus(403);
             return null;
         }
         transaction.setId(id);
@@ -61,7 +57,7 @@ public class TransactionController {
         User user = getAuthenticationUser(authentication);
         Transaction transaction = transactionRepository.findByIdAndUser(id, user);
         if (transaction == null) {
-            myException.sendError(403, "Transaction not exist", response);
+            response.setStatus(403);
         } else {
             transactionRepository.delete(transaction);
         }
