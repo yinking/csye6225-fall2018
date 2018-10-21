@@ -111,7 +111,7 @@
                 "cd /",
                 "cd /opt/tomcat/bin",
                 "touch setenv.sh",
-                "echo 'export JAVA_OPTS='-DlocalLocation=/home/centos/'' > setenv.sh",
+                "echo 'export JAVA_OPTS='-DlocalLocation=/home/centos/'' >> setenv.sh",
                 "echo 'export JAVA_OPTS='-DawsEndpointUrl=https://s3.us-east-1.amazonaws.com'' >> setenv.sh",
                 "echo 'export JAVA_OPTS='-DawsAccessKeyId=AKIAJHQBAEECVNNBNMVA'' >> setenv.sh",
                 "echo 'export JAVA_OPTS='-DawsSecretKey=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'' >> setenv.sh",

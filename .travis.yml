@@ -15,6 +15,7 @@ services:
 script:
 - cd webapp
 - mvn clean package
+- psql -c '\l' -U postgres
 - cd ..
 
 after_success:
