@@ -38,7 +38,6 @@ public class MyCommandLineRunner implements CommandLineRunner {
         transaction.setCategory("food");
         transaction.setUser(user);
         transactionRepository.save(transaction);
-        System.out.println(userRepository.findByUsername("root").getUsername());
     }
 
 }
