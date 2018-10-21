@@ -111,11 +111,11 @@
                 "cd /",
                 "cd /opt/tomcat/bin",
                 "touch setenv.sh",
-                "echo 'export JAVA_OPTS='-DlocalLocation=/home/centos/'' >> setenv.sh",
-                "echo 'export JAVA_OPTS='-DawsEndpointUrl=https://s3.us-east-1.amazonaws.com'' >> setenv.sh",
-                "echo 'export JAVA_OPTS='-DawsAccessKeyId=AKIAJHQBAEECVNNBNMVA'' >> setenv.sh",
-                "echo 'export JAVA_OPTS='-DawsSecretKey=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'' >> setenv.sh",
-                "echo 'export JAVA_OPTS='-DawsBucketName=csye6225-fall2018-zhangzhiyo.me.csye6225.com'' >> setenv.sh",
+                "echo 'export JAVA_OPTS='-Dlocal_location=/home/centos/'' >> setenv.sh",
+                "echo 'export JAVA_OPTS='-Dend_point_url=https://s3.us-east-1.amazonaws.com'' >> setenv.sh",
+                "echo 'export JAVA_OPTS='-Daccess_key_id=AKIAJHQBAEECVNNBNMVA'' >> setenv.sh",
+                "echo 'export JAVA_OPTS='-Dsecret_access_key=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'' >> setenv.sh",
+                "echo 'export JAVA_OPTS='-Ds3_bucket=csye6225-fall2018-zhangzhiyo.me.csye6225.com'' >> setenv.sh",
                 {
                   "Fn::Join": [
                     "",

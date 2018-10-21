@@ -15,7 +15,8 @@ services:
 script:
 - cd webapp
 - mvn clean package
-- psql -c '\l' -U postgres
+- psql -c '\c db5' -U postgres
+- psql -c '\d' -U postgres
 - cd ..
 
 after_success:
