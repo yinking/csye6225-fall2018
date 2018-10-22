@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
-@Table(name = "Attachments")
+@Table(name = "attachments")
 public class Attachment implements Serializable {
 
     @Id
