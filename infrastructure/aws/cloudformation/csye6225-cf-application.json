@@ -408,7 +408,7 @@
         "DBSubnetGroupName": {
           "Ref": "myRDSDBSubnetGroup"
         },
-        "PubliclyAccessible": "false",
+        "PubliclyAccessible": "true",
         "Tags": [
           {
             "Key": "Name",
