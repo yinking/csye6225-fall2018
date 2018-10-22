@@ -6,12 +6,6 @@ sudo: false
 
 install: true
 
-before_script:
-- psql -c 'create database db5;' -U postgres
-
-services:
-- postgresql
-
 script:
 - cd webapp
 - mvn clean package
