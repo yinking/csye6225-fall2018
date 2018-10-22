@@ -396,7 +396,7 @@
     },
     "myRDSDBInstance": {
       "Type": "AWS::RDS::DBInstance",
-      "Properties": {:
+      "Properties": {
         "AllocatedStorage": "100",
         "DBName": "csye6225",
         "DBInstanceClass": "db.t2.medium",
@@ -408,7 +408,7 @@
         "DBSubnetGroupName": {
           "Ref": "myRDSDBSubnetGroup"
         },
-        "PubliclyAccessible": "false",
+        "PubliclyAccessible": "true",
         "Tags": [
           {
             "Key": "Name",
