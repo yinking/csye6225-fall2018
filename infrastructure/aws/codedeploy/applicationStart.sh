@@ -1,2 +1,3 @@
 #!/bin/bash
-sudo systemctl start tomcat.service
+
+sudo java -jar /opt/tomcat/webapps/demo-0.0.1-SNAPSHOT.jar
