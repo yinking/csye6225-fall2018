@@ -75,8 +75,7 @@ Prerequisite:
     4) Under Transaction folder, "GET" would be part will return existing transactions, "POST" would new transaction, "DEL" can delete a transaction, and "PUT" can change the content of an existing transaction
     5) To determin which transaction to operate, change the URL content to the transaction ID to be ultered or deleted and the ID would be added to the end of transaction.
 
-as
-
+aa
 
 
 
