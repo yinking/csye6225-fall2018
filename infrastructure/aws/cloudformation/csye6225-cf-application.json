@@ -98,7 +98,7 @@
                 "echo 'Environment=CATALINA_HOME=/opt/tomcat' >> tomcat.service",
                 "echo 'Environment=CATALINA_BASE=/opt/tomcat' >> tomcat.service",
                 "echo 'Environment=\"CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC\"' >> tomcat.service",
-                "echo 'Environment=\"JAVA_OPTS=-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom\"' >> tomcat.service",
+                "echo 'Environment=\"JAVA_OPTS=-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom -Djava.net.preferIPv4Addresses=true\"' >> tomcat.service",
                 "echo 'ExecStart=/opt/tomcat/bin/startup.sh' >> tomcat.service",
                 "echo 'ExecStop=/bin/kill -15 $MAINPID' >> tomcat.service",
                 "echo 'User=tomcat' >> tomcat.service",
