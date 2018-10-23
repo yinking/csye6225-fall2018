@@ -98,7 +98,7 @@
                 "echo 'Environment=CATALINA_HOME=/opt/tomcat' >> tomcat.service",
                 "echo 'Environment=CATALINA_BASE=/opt/tomcat' >> tomcat.service",
                 "echo 'Environment=\"CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC\"' >> tomcat.service",
-                "echo 'Environment=\"JAVA_OPTS=-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom -Djava.net.preferIPv4Addresses=true\"' >> tomcat.service",
+                "echo 'Environment=\"JAVA_OPTS=-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom\"' >> tomcat.service",
                 "echo 'ExecStart=/opt/tomcat/bin/startup.sh' >> tomcat.service",
                 "echo 'ExecStop=/bin/kill -15 $MAINPID' >> tomcat.service",
                 "echo 'User=tomcat' >> tomcat.service",
@@ -111,28 +111,7 @@
                 "cd /",
                 "cd /opt/tomcat/bin",
                 "touch setenv.sh",
-                "echo 'export JAVA_OPTS='-Dlocal_location=/home/centos/'' >> setenv.sh",
-                "echo 'export JAVA_OPTS='-Dend_point_url=https://s3.us-east-1.amazonaws.com'' >> setenv.sh",
-                "echo 'export JAVA_OPTS='-Daccess_key_id=AKIAJHQBAEECVNNBNMVA'' >> setenv.sh",
-                "echo 'export JAVA_OPTS='-Dsecret_access_key=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'' >> setenv.sh",
-                "echo 'export JAVA_OPTS='-Ds3_bucket=csye6225-fall2018-zhangzhiyo.me.csye6225.com'' >> setenv.sh",
-                {
-                  "Fn::Join": [
-                    "",
-                    [
-                      "echo 'export JAVA_OPTS='-Dspring_datasource_url=jdbc:postgresql://",
-                      {
-                        "Fn::GetAtt": [
-                          "myRDSDBInstance",
-                          "Endpoint.Address"
-                        ]
-                      },
-                      ":5432/csye6225'' >> setenv.sh"
-                    ]
-                  ]
-                },
-                "echo 'export JAVA_OPTS='-Dspring_datasource_username=csye6225master'' >> setenv.sh",
-                "echo 'export JAVA_OPTS='-Dspring_datasource_password=csye6225password'' >> setenv.sh",
+                "echo 'JAVA_OPTS=\"$JAVA_OPTS -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true\"' > setenv.sh",
                 "systemctl daemon-reload",
                 "systemctl start tomcat.service",
                 "cd ~",
@@ -186,6 +165,12 @@
             "IpProtocol": "tcp",
             "FromPort": "443",
             "ToPort": "443",
+            "CidrIp": "0.0.0.0/0"
+          },
+          {
+            "IpProtocol": "tcp",
+            "FromPort": "8080",
+            "ToPort": "8080",
             "CidrIp": "0.0.0.0/0"
           }
         ],
