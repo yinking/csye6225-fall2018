@@ -6,6 +6,9 @@ sudo: false
 
 install: true
 
+git:
+    depth: false
+
 script:
 - cd webapp
 - mvn clean package

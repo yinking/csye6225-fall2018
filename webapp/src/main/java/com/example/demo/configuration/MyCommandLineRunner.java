@@ -25,19 +25,18 @@ public class MyCommandLineRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        User user = new User();
-        user.setEmail("root");
-        user.setUsername(user.getEmail());
-        user.setPassword(bCryptPasswordEncoder.encode("root"));
-        userRepository.save(user);
-        Transaction transaction = new Transaction();
-        transaction.setDescription("coffee");
-        transaction.setMerchant("starbucks");
-        transaction.setAmount(2.69f);
-        transaction.setDate(new Date());
-        transaction.setCategory("food");
-        transaction.setUser(user);
-        transactionRepository.save(transaction);
-        System.out.println(userRepository.findByUsername("root").getUsername());
+//        User user = new User();
+//        user.setEmail("root");
+//        user.setUsername(user.getEmail());
+//        user.setPassword(bCryptPasswordEncoder.encode("root"));
+//        userRepository.save(user);
+//        Transaction transaction = new Transaction();
+//        transaction.setDescription("coffee");
+//        transaction.setMerchant("starbucks");
+//        transaction.setAmount(2.69f);
+//        transaction.setDate(new Date());
+//        transaction.setCategory("food");
+//        transaction.setUser(user);
+//        transactionRepository.save(transaction);
     }
 }
