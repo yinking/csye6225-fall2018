@@ -377,6 +377,7 @@
     },
     "myRoute": {
       "Type": "AWS::EC2::Route",
+      "DependsOn" : "myVPCGatewayAttachment",
       "Properties": {
         "RouteTableId": {
           "Ref": "myRouteTable1"
