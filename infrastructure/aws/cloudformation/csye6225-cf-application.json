@@ -122,7 +122,7 @@
                         "Fn::Join": [
                           "",
                           [
-                            "-Dspring_datasource_url=jdbc:postgresql://",
+                            "-Dspring.datasource.url=jdbc:postgresql://",
                             {
                               "Fn::GetAtt": [
                                 "myRDSDBInstance",
@@ -133,9 +133,9 @@
                           ]
                         ]
                       },
-                      "-Dspring_datasource_username=csye6225master",
-                      "-Dspring_datasource_password=csye6225password",
-                      "-Dlogging_file=/home/centos/my.log",
+                      "-Dspring.datasource.username=csye6225master",
+                      "-Dspring.datasource.password=csye6225password",
+                      "-Dlogging.file=/home/centos/my.log",
                       "\"' > setenv.sh"
                     ]
                   ]
@@ -418,10 +418,15 @@
         "Engine": "postgres",
         "MasterUsername": "csye6225master",
         "MasterUserPassword": "csye6225password",
+        "VPCSecurityGroups": [
+          {
+            "Ref": "csye6225rds"
+          }
+        ],
         "DBSubnetGroupName": {
           "Ref": "myRDSDBSubnetGroup"
         },
-        "PubliclyAccessible": "false",
+        "PubliclyAccessible": "true",
         "Tags": [
           {
             "Key": "Name",
