@@ -135,7 +135,6 @@
                       },
                       "-Dspring.datasource.username=csye6225master",
                       "-Dspring.datasource.password=csye6225password",
-                      "-Dlogging.file=/home/centos/my.log",
                       "\"' > setenv.sh"
                     ]
                   ]
