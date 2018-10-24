@@ -111,7 +111,35 @@
                 "cd /",
                 "cd /opt/tomcat/bin",
                 "touch setenv.sh",
-                "echo 'JAVA_OPTS=\"$JAVA_OPTS -Djava.net.preferIPv4Stack=true -Djava.net.preferIPv4Addresses=true\"' > setenv.sh",
+                {
+                  "Fn::Join": [
+                    " ",
+                    [
+                      "echo 'JAVA_OPTS=\"$JAVA_OPTS ",
+                      "-Djava.net.preferIPv4Stack=true",
+                      "-Djava.net.preferIPv4Addresses=true",
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "-Dspring_datasource_url=jdbc:postgresql://",
+                            {
+                              "Fn::GetAtt": [
+                                "myRDSDBInstance",
+                                "Endpoint.Address"
+                              ]
+                            },
+                            ":5432/csye6225"
+                          ]
+                        ]
+                      },
+                      "-Dspring_datasource_username=csye6225master",
+                      "-Dspring_datasource_password=csye6225password",
+                      "-Dlogging_file=/home/centos/my.log",
+                      "\"' > setenv.sh"
+                    ]
+                  ]
+                },
                 "systemctl daemon-reload",
                 "systemctl start tomcat.service",
                 "cd ~",
@@ -393,7 +421,7 @@
         "DBSubnetGroupName": {
           "Ref": "myRDSDBSubnetGroup"
         },
-        "PubliclyAccessible": "true",
+        "PubliclyAccessible": "false",
         "Tags": [
           {
             "Key": "Name",
