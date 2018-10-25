@@ -3,10 +3,19 @@
     "Name": {
       "Type": "String"
     },
-    "domain": {
+    "awsBucketName": {
       "Type": "String"
     },
     "accountNumber": {
+      "Type": "String"
+    },
+    "localLocation": {
+      "Type": "String"
+    },
+    "awsAccessKeyId": {
+      "Type": "String"
+    },
+    "awsSeceretKey": {
       "Type": "String"
     }
   },
@@ -135,6 +144,50 @@
                       },
                       "-Dspring.datasource.username=csye6225master",
                       "-Dspring.datasource.password=csye6225password",
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "-DlocalLocation=",
+                            {
+                              "Ref": "localLocation"
+                            }
+                          ]
+                        ]
+                      },
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "-DawsAccessKeyId=",
+                            {
+                              "Ref": "awsAccessKeyId"
+                            }
+                          ]
+                        ]
+                      },
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "-DawsSeceretKey=",
+                            {
+                              "Ref": "awsSeceretKey"
+                            }
+                          ]
+                        ]
+                      },
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "-DawsBucketName=",
+                            {
+                              "Ref": "awsBucketName"
+                            }
+                          ]
+                        ]
+                      },
                       "\"' > setenv.sh"
                     ]
                   ]
@@ -296,15 +349,7 @@
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketName": {
-          "Fn::Join": [
-            "",
-            [
-              {
-                "Ref": "domain"
-              },
-              ".csye6225.com"
-            ]
-          ]
+          "Ref": "awsBucketName"
         },
         "Tags": [
           {
