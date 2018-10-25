@@ -198,7 +198,10 @@
                 "wget https://aws-codedeploy-us-east-1.s3.amazonaws.com/latest/install",
                 "chmod +x ./install",
                 "./install auto",
-                "service codedeploy-agent start"
+                "service codedeploy-agent start",
+                "cd /",
+                "mkdir /temp",
+                "chmod 777 /temp"
               ]
             ]
           }
