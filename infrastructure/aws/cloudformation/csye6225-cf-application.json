@@ -3,22 +3,19 @@
     "Name": {
       "Type": "String"
     },
-    "domain": {
+    "awsBucketName": {
       "Type": "String"
     },
     "accountNumber": {
       "Type": "String"
     },
-    "localLocation":{
+    "localLocation": {
       "Type": "String"
     },
-    "awsAccessKeyId":{
+    "awsAccessKeyId": {
       "Type": "String"
     },
-    "awsSeceretKey":{
-      "Type": "String"
-    },
-    "awsBucketName":{
+    "awsSeceretKey": {
       "Type": "String"
     }
   },
@@ -352,15 +349,7 @@
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketName": {
-          "Fn::Join": [
-            "",
-            [
-              {
-                "Ref": "domain"
-              },
-              ".csye6225.com"
-            ]
-          ]
+          "Ref": "awsBucketName"
         },
         "Tags": [
           {
