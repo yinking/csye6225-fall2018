@@ -6,6 +6,8 @@ sudo rm -rf /opt/tomcat/webapps/docs  /opt/tomcat/webapps/examples /opt/tomcat/w
 
 sudo chown tomcat:tomcat /opt/tomcat/webapps/demo-0.0.1-SNAPSHOT.war
 
+sudo chmod -R 777 /home/centos
+
 # cleanup log files
 sudo rm -rf /opt/tomcat/logs/catalina*
 sudo rm -rf /opt/tomcat/logs/*.log
