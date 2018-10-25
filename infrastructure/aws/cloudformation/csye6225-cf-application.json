@@ -15,7 +15,7 @@
     "awsAccessKeyId": {
       "Type": "String"
     },
-    "awsSeceretKey": {
+    "awsSecretKey": {
       "Type": "String"
     }
   },
@@ -170,9 +170,9 @@
                         "Fn::Join": [
                           "",
                           [
-                            "-DawsSeceretKey=",
+                            "-DawsSecretKey=",
                             {
-                              "Ref": "awsSeceretKey"
+                              "Ref": "awsSecretKey"
                             }
                           ]
                         ]
