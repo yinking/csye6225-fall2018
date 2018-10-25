@@ -3,10 +3,19 @@
     "Name": {
       "Type": "String"
     },
-    "domain": {
+    "awsBucketName": {
       "Type": "String"
     },
     "accountNumber": {
+      "Type": "String"
+    },
+    "localLocation": {
+      "Type": "String"
+    },
+    "awsAccessKeyId": {
+      "Type": "String"
+    },
+    "awsSecretKey": {
       "Type": "String"
     }
   },
@@ -135,7 +144,50 @@
                       },
                       "-Dspring.datasource.username=csye6225master",
                       "-Dspring.datasource.password=csye6225password",
-                      "-Dlogging.file=/home/centos/my.log",
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "-DlocalLocation=",
+                            {
+                              "Ref": "localLocation"
+                            }
+                          ]
+                        ]
+                      },
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "-DawsAccessKeyId=",
+                            {
+                              "Ref": "awsAccessKeyId"
+                            }
+                          ]
+                        ]
+                      },
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "-DawsSecretKey=",
+                            {
+                              "Ref": "awsSecretKey"
+                            }
+                          ]
+                        ]
+                      },
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "-DawsBucketName=",
+                            {
+                              "Ref": "awsBucketName"
+                            }
+                          ]
+                        ]
+                      },
                       "\"' > setenv.sh"
                     ]
                   ]
@@ -297,15 +349,7 @@
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketName": {
-          "Fn::Join": [
-            "",
-            [
-              {
-                "Ref": "domain"
-              },
-              ".csye6225.com"
-            ]
-          ]
+          "Ref": "awsBucketName"
         },
         "Tags": [
           {
@@ -411,6 +455,9 @@
       "Type": "AWS::RDS::DBInstance",
       "Properties": {
         "AllocatedStorage": "100",
+        "AvailabilityZone": {
+          "Fn::ImportValue": "myAvailabilityZone1"
+        },
         "DBName": "csye6225",
         "DBInstanceClass": "db.t2.medium",
         "DBInstanceIdentifier": "csye6225-spring2018",
@@ -426,7 +473,7 @@
         "DBSubnetGroupName": {
           "Ref": "myRDSDBSubnetGroup"
         },
-        "PubliclyAccessible": "true",
+        "PubliclyAccessible": "false",
         "Tags": [
           {
             "Key": "Name",

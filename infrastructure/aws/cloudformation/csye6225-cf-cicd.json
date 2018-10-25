@@ -3,7 +3,7 @@
     "Name": {
       "Type": "String"
     },
-    "domain": {
+    "codeDeployS3Bucket": {
       "Type": "String"
     },
     "accountNumber": {
@@ -218,15 +218,7 @@
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketName": {
-          "Fn::Join": [
-            "",
-            [
-              "code-deploy.",
-              {
-                "Ref": "domain"
-              }
-            ]
-          ]
+          "Ref": "codeDeployS3Bucket"
         },
         "Tags": [
           {
