@@ -1,6 +1,6 @@
 {
   "Parameters": {
-    "Name": {
+    "stackName": {
       "Type": "String"
     }
   },
@@ -14,7 +14,7 @@
           {
             "Key": "Name",
             "Value": {
-              "Ref": "Name"
+              "Ref": "stackName"
             }
           }
         ]
@@ -40,7 +40,7 @@
           {
             "Key": "Name",
             "Value": {
-              "Ref": "Name"
+              "Ref": "stackName"
             }
           }
         ]
@@ -66,7 +66,7 @@
           {
             "Key": "Name",
             "Value": {
-              "Ref": "Name"
+              "Ref": "stackName"
             }
           }
         ]
@@ -92,7 +92,7 @@
           {
             "Key": "Name",
             "Value": {
-              "Ref": "Name"
+              "Ref": "stackName"
             }
           }
         ]
@@ -117,7 +117,7 @@
           {
             "Key": "Name",
             "Value": {
-              "Ref": "Name"
+              "Ref": "stackName"
             }
           }
         ]
@@ -142,7 +142,7 @@
           {
             "Key": "Name",
             "Value": {
-              "Ref": "Name"
+              "Ref": "stackName"
             }
           }
         ]
@@ -167,7 +167,7 @@
           {
             "Key": "Name",
             "Value": {
-              "Ref": "Name"
+              "Ref": "stackName"
             }
           }
         ]
@@ -180,7 +180,7 @@
           {
             "Key": "Name",
             "Value": {
-              "Ref": "Name"
+              "Ref": "stackName"
             }
           }
         ]
@@ -194,7 +194,15 @@
         },
         "InternetGatewayId": {
           "Ref": "myInternetGateway"
-        }
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Ref": "stackName"
+            }
+          }
+        ]
       }
     },
     "myRouteTable1": {
@@ -207,7 +215,7 @@
           {
             "Key": "Name",
             "Value": {
-              "Ref": "Name"
+              "Ref": "stackName"
             }
           }
         ]
@@ -223,7 +231,7 @@
           {
             "Key": "Name",
             "Value": {
-              "Ref": "Name"
+              "Ref": "stackName"
             }
           }
         ]
@@ -237,7 +245,15 @@
         },
         "RouteTableId": {
           "Ref": "myRouteTable1"
-        }
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Ref": "stackName"
+            }
+          }
+        ]
       }
     },
     "mySubnetRouteTableAssociation2": {
@@ -248,7 +264,15 @@
         },
         "RouteTableId": {
           "Ref": "myRouteTable1"
-        }
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Ref": "stackName"
+            }
+          }
+        ]
       }
     },
     "mySubnetRouteTableAssociation3": {
@@ -259,7 +283,15 @@
         },
         "RouteTableId": {
           "Ref": "myRouteTable1"
-        }
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Ref": "stackName"
+            }
+          }
+        ]
       }
     },
     "mySubnetRouteTableAssociation4": {
@@ -270,7 +302,15 @@
         },
         "RouteTableId": {
           "Ref": "myRouteTable2"
-        }
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Ref": "stackName"
+            }
+          }
+        ]
       }
     },
     "mySubnetRouteTableAssociation5": {
@@ -281,7 +321,15 @@
         },
         "RouteTableId": {
           "Ref": "myRouteTable2"
-        }
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Ref": "stackName"
+            }
+          }
+        ]
       }
     },
     "mySubnetRouteTableAssociation6": {
@@ -292,7 +340,15 @@
         },
         "RouteTableId": {
           "Ref": "myRouteTable2"
-        }
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Ref": "stackName"
+            }
+          }
+        ]
       }
     },
     "myRoute": {
@@ -305,7 +361,15 @@
         "DestinationCidrBlock": "0.0.0.0/0",
         "GatewayId": {
           "Ref": "myInternetGateway"
-        }
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Ref": "stackName"
+            }
+          }
+        ]
       }
     }
   },

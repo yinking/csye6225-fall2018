@@ -1,6 +1,6 @@
 {
   "Parameters": {
-    "Name": {
+    "stackName": {
       "Type": "String"
     },
     "codeDeployS3Bucket": {
@@ -27,7 +27,15 @@
               "Resource": "*"
             }
           ]
-        }
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Ref": "stackName"
+            }
+          }
+        ]
       }
     },
     "TravisUploadToS3": {
@@ -50,6 +58,14 @@
         },
         "Users": [
           "travis"
+        ],
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Ref": "stackName"
+            }
+          }
         ]
       }
     },
@@ -139,6 +155,14 @@
         },
         "Users": [
           "travis"
+        ],
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Ref": "stackName"
+            }
+          }
         ]
       }
     },
@@ -175,7 +199,15 @@
             ]
           }
         ],
-        "RoleName": "CodeDeployEC2ServiceRole"
+        "RoleName": "CodeDeployEC2ServiceRole",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Ref": "stackName"
+            }
+          }
+        ]
       },
       "DependsOn": "CodeDeployEC2S3"
     },
@@ -201,7 +233,15 @@
         "ManagedPolicyArns": [
           "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
         ],
-        "RoleName": "CodeDeployServiceRole"
+        "RoleName": "CodeDeployServiceRole",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Ref": "stackName"
+            }
+          }
+        ]
       }
     },
     "myIAMInstanceProfile": {
@@ -210,6 +250,14 @@
         "Roles": [
           {
             "Ref": "CodeDeployEC2ServiceRole"
+          }
+        ],
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Ref": "stackName"
+            }
           }
         ]
       }
@@ -224,7 +272,7 @@
           {
             "Key": "Name",
             "Value": {
-              "Ref": "Name"
+              "Ref": "stackName"
             }
           }
         ]

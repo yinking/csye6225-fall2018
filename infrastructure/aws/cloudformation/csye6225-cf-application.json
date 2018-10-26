@@ -1,6 +1,6 @@
 {
   "Parameters": {
-    "Name": {
+    "stackName": {
       "Type": "String"
     },
     "awsBucketName": {
@@ -20,7 +20,7 @@
           {
             "Key": "Name",
             "Value": {
-              "Ref": "Name"
+              "Ref": "stackName"
             }
           }
         ]
@@ -63,7 +63,7 @@
           {
             "Key": "Name",
             "Value": {
-              "Ref": "Name"
+              "Ref": "stackName"
             }
           }
         ]
@@ -90,7 +90,7 @@
           {
             "Key": "Name",
             "Value": {
-              "Ref": "Name"
+              "Ref": "stackName"
             }
           }
         ]
@@ -120,7 +120,7 @@
           {
             "Key": "Name",
             "Value": {
-              "Ref": "Name"
+              "Ref": "stackName"
             }
           }
         ]
@@ -136,7 +136,7 @@
           {
             "Key": "Name",
             "Value": {
-              "Ref": "Name"
+              "Ref": "stackName"
             }
           }
         ]
@@ -145,7 +145,15 @@
     "myWebapp": {
       "Type": "AWS::CodeDeploy::Application",
       "Properties": {
-        "ApplicationName": "myWebapp"
+        "ApplicationName": "myWebapp",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Ref": "stackName"
+            }
+          }
+        ]
       }
     },
     "myRDSDBSubnetGroup": {
@@ -164,7 +172,7 @@
           {
             "Key": "Name",
             "Value": {
-              "Ref": "Name"
+              "Ref": "stackName"
             }
           }
         ]
@@ -197,7 +205,7 @@
           {
             "Key": "Name",
             "Value": {
-              "Ref": "Name"
+              "Ref": "stackName"
             }
           }
         ]

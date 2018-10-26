@@ -1,6 +1,6 @@
 {
   "Parameters": {
-    "Name": {
+    "stackName": {
       "Type": "String"
     },
     "accountNumber": {
@@ -237,7 +237,15 @@
               ":role/CodeDeployServiceRole"
             ]
           ]
-        }
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Ref": "stackName"
+            }
+          }
+        ]
       }
     }
   }
