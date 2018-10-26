@@ -203,7 +203,7 @@
             "Key": "Name",
             "Value": {
               "Fn::Join": [
-                "",
+                "-",
                 [
                   {
                     "Ref": "Name"
@@ -359,7 +359,7 @@
             "Type": "KEY_AND_VALUE",
             "Value": {
               "Fn::Join": [
-                "",
+                "-",
                 [
                   {
                     "Ref": "Name"
