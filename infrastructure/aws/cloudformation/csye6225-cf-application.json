@@ -31,17 +31,11 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "EC2Volume"
-                ]
-              ]
-            }
+            "Value": [
+              {
+                "Ref": "Name"
+              }
+            ]
           }
         ]
       }
@@ -260,17 +254,11 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "EC2SecurityGroup1"
-                ]
-              ]
-            }
+            "Value": [
+              {
+                "Ref": "Name"
+              }
+            ]
           }
         ]
       }
@@ -295,17 +283,11 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "EC2SecurityGroup2"
-                ]
-              ]
-            }
+            "Value": [
+              {
+                "Ref": "Name"
+              }
+            ]
           }
         ]
       }
@@ -333,17 +315,11 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "DynamoDBTable"
-                ]
-              ]
-            }
+            "Value": [
+              {
+                "Ref": "Name"
+              }
+            ]
           }
         ]
       }
@@ -359,13 +335,9 @@
             "Key": "Name",
             "Value": {
               "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "S3Bucket"
-                ]
+                {
+                  "Ref": "Name"
+                }
               ]
             }
           }
@@ -439,17 +411,11 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "RDSDBSubnetGroup"
-                ]
-              ]
-            }
+            "Value": [
+              {
+                "Ref": "Name"
+              }
+            ]
           }
         ]
       }
@@ -457,12 +423,12 @@
     "myRDSDBInstance": {
       "Type": "AWS::RDS::DBInstance",
       "Properties": {
-        "AllocatedStorage": "100",
+        "AllocatedStorage": "20",
         "AvailabilityZone": {
           "Fn::ImportValue": "myAvailabilityZone1"
         },
         "DBName": "csye6225",
-        "DBInstanceClass": "db.t2.medium",
+        "DBInstanceClass": "db.t2.micro",
         "DBInstanceIdentifier": "csye6225-spring2018",
         "MultiAZ": "false",
         "Engine": "postgres",
@@ -480,17 +446,11 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "RDSDBInstance"
-                ]
-              ]
-            }
+            "Value": [
+              {
+                "Ref": "Name"
+              }
+            ]
           }
         ]
       }
