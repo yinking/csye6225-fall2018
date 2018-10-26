@@ -181,7 +181,7 @@
             "Key": "Name",
             "Value": {
               "Fn::Join": [
-                "",
+                "-",
                 [
                   {
                     "Ref": "Name"
