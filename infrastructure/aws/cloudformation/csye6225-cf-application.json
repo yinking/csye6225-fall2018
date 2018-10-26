@@ -229,7 +229,7 @@
         "Name": "myVolume"
       }
     },
-    "myRDSutput": {
+    "csye6225rdsOutput": {
       "Value": {
         "Ref": "csye6225rds"
       },
