@@ -13,11 +13,9 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": [
-              {
-                "Ref": "Name"
-              }
-            ]
+            "Value": {
+              "Ref": "Name"
+            }
           }
         ]
       }
@@ -41,11 +39,9 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": [
-              {
-                "Ref": "Name"
-              }
-            ]
+            "Value": {
+              "Ref": "Name"
+            }
           }
         ]
       }
@@ -69,11 +65,9 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": [
-              {
-                "Ref": "Name"
-              }
-            ]
+            "Value": {
+              "Ref": "Name"
+            }
           }
         ]
       }
@@ -97,11 +91,9 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": [
-              {
-                "Ref": "Name"
-              }
-            ]
+            "Value": {
+              "Ref": "Name"
+            }
           }
         ]
       }
@@ -124,11 +116,9 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": [
-              {
-                "Ref": "Name"
-              }
-            ]
+            "Value": {
+              "Ref": "Name"
+            }
           }
         ]
       }
@@ -151,11 +141,9 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": [
-              {
-                "Ref": "Name"
-              }
-            ]
+            "Value": {
+              "Ref": "Name"
+            }
           }
         ]
       }
@@ -178,11 +166,9 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": [
-              {
-                "Ref": "Name"
-              }
-            ]
+            "Value": {
+              "Ref": "Name"
+            }
           }
         ]
       }
@@ -193,11 +179,9 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": [
-              {
-                "Ref": "Name"
-              }
-            ]
+            "Value": {
+              "Ref": "Name"
+            }
           }
         ]
       }
@@ -222,11 +206,9 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": [
-              {
-                "Ref": "Name"
-              }
-            ]
+            "Value": {
+              "Ref": "Name"
+            }
           }
         ]
       }
@@ -240,11 +222,9 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": [
-              {
-                "Ref": "Name"
-              }
-            ]
+            "Value": {
+              "Ref": "Name"
+            }
           }
         ]
       }

@@ -223,11 +223,9 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": [
-              {
-                "Ref": "Name"
-              }
-            ]
+            "Value": {
+              "Ref": "Name"
+            }
           }
         ]
       }
