@@ -223,17 +223,11 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "CodeDeployS3Bucket"
-                ]
-              ]
-            }
+            "Value": [
+              {
+                "Ref": "Name"
+              }
+            ]
           }
         ]
       }

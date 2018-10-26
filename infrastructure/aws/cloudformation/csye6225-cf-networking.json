@@ -13,17 +13,11 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "vpc"
-                ]
-              ]
-            }
+            "Value": [
+              {
+                "Ref": "Name"
+              }
+            ]
           }
         ]
       }
@@ -47,17 +41,11 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "subnet1"
-                ]
-              ]
-            }
+            "Value": [
+              {
+                "Ref": "Name"
+              }
+            ]
           }
         ]
       }
@@ -81,17 +69,11 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "subnet2"
-                ]
-              ]
-            }
+            "Value": [
+              {
+                "Ref": "Name"
+              }
+            ]
           }
         ]
       }
@@ -115,17 +97,11 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "subnet3"
-                ]
-              ]
-            }
+            "Value": [
+              {
+                "Ref": "Name"
+              }
+            ]
           }
         ]
       }
@@ -148,17 +124,11 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "subnet4"
-                ]
-              ]
-            }
+            "Value": [
+              {
+                "Ref": "Name"
+              }
+            ]
           }
         ]
       }
@@ -181,17 +151,11 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "subnet5"
-                ]
-              ]
-            }
+            "Value": [
+              {
+                "Ref": "Name"
+              }
+            ]
           }
         ]
       }
@@ -214,17 +178,11 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "subnet6"
-                ]
-              ]
-            }
+            "Value": [
+              {
+                "Ref": "Name"
+              }
+            ]
           }
         ]
       }
@@ -235,17 +193,11 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "InternetGateway"
-                ]
-              ]
-            }
+            "Value": [
+              {
+                "Ref": "Name"
+              }
+            ]
           }
         ]
       }
@@ -270,17 +222,11 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "public-route-table"
-                ]
-              ]
-            }
+            "Value": [
+              {
+                "Ref": "Name"
+              }
+            ]
           }
         ]
       }
@@ -294,17 +240,11 @@
         "Tags": [
           {
             "Key": "Name",
-            "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "private-route-table"
-                ]
-              ]
-            }
+            "Value": [
+              {
+                "Ref": "Name"
+              }
+            ]
           }
         ]
       }
@@ -377,7 +317,7 @@
     },
     "myRoute": {
       "Type": "AWS::EC2::Route",
-      "DependsOn" : "myVPCGatewayAttachment",
+      "DependsOn": "myVPCGatewayAttachment",
       "Properties": {
         "RouteTableId": {
           "Ref": "myRouteTable1"
