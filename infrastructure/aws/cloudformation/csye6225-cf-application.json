@@ -145,15 +145,7 @@
     "myWebapp": {
       "Type": "AWS::CodeDeploy::Application",
       "Properties": {
-        "ApplicationName": "myWebapp",
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": {
-              "Ref": "stackName"
-            }
-          }
-        ]
+        "ApplicationName": "myWebapp"
       }
     },
     "myRDSDBSubnetGroup": {
