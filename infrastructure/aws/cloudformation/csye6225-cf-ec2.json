@@ -184,7 +184,7 @@
                 "-",
                 [
                   {
-                    "Ref": "Name"
+                    "Ref": "stackName"
                   },
                   "EC2Instance"
                 ]
@@ -218,7 +218,7 @@
                 "-",
                 [
                   {
-                    "Ref": "Name"
+                    "Ref": "stackName"
                   },
                   "EC2Instance"
                 ]
