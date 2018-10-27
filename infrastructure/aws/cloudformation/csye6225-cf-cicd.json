@@ -27,15 +27,7 @@
               "Resource": "*"
             }
           ]
-        },
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": {
-              "Ref": "stackName"
-            }
-          }
-        ]
+        }
       }
     },
     "TravisUploadToS3": {
@@ -58,14 +50,6 @@
         },
         "Users": [
           "travis"
-        ],
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": {
-              "Ref": "stackName"
-            }
-          }
         ]
       }
     },
@@ -155,14 +139,6 @@
         },
         "Users": [
           "travis"
-        ],
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": {
-              "Ref": "stackName"
-            }
-          }
         ]
       }
     },
@@ -199,15 +175,7 @@
             ]
           }
         ],
-        "RoleName": "CodeDeployEC2ServiceRole",
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": {
-              "Ref": "stackName"
-            }
-          }
-        ]
+        "RoleName": "CodeDeployEC2ServiceRole"
       },
       "DependsOn": "CodeDeployEC2S3"
     },
@@ -233,15 +201,7 @@
         "ManagedPolicyArns": [
           "arn:aws:iam::aws:policy/service-role/AWSCodeDeployRole"
         ],
-        "RoleName": "CodeDeployServiceRole",
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": {
-              "Ref": "stackName"
-            }
-          }
-        ]
+        "RoleName": "CodeDeployServiceRole"
       }
     },
     "myIAMInstanceProfile": {
@@ -250,14 +210,6 @@
         "Roles": [
           {
             "Ref": "CodeDeployEC2ServiceRole"
-          }
-        ],
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": {
-              "Ref": "stackName"
-            }
           }
         ]
       }
