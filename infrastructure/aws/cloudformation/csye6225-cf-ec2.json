@@ -18,7 +18,10 @@
     "awsSecretKey": {
       "Type": "String"
     },
-    "arn": {
+    "topicARN": {
+      "Type": "String"
+    },
+    "endpoint": {
       "Type": "String"
     }
   },
@@ -243,23 +246,18 @@
         }
       }
     },
-    "MySNSTopic": {
+    "mySNSTopic": {
       "Type": "AWS::SNS::Topic",
       "Properties": {
         "Subscription": [
           {
-            "Endpoint": {
-              "Fn::GetAtt": [
-                "MyQueue1",
-                {
-                  "Ref": "arn"
-                }
-              ]
+            "Endpoint": { 
+            	"Ref": "endpoint"
             },
-            "Protocol": "sqs"
+            "Protocol" : "email"
           }
         ],
-        "TopicName": "SampleTopic"
+        "TopicName": "csye6225-SNSTopic"
       }
     }
   }
