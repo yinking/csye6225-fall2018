@@ -17,6 +17,9 @@
     },
     "awsSecretKey": {
       "Type": "String"
+    },
+    "arn": {
+      "Type": "String"
     }
   },
   "Resources": {
@@ -238,6 +241,25 @@
             ]
           ]
         }
+      }
+    },
+    "MySNSTopic": {
+      "Type": "AWS::SNS::Topic",
+      "Properties": {
+        "Subscription": [
+          {
+            "Endpoint": {
+              "Fn::GetAtt": [
+                "MyQueue1",
+                {
+                  "Ref": "arn"
+                }
+              ]
+            },
+            "Protocol": "sqs"
+          }
+        ],
+        "TopicName": "SampleTopic"
       }
     }
   }
