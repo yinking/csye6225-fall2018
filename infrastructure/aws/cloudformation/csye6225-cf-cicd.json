@@ -6,6 +6,9 @@
     "codeDeployS3Bucket": {
       "Type": "String"
     },
+    "ParamDomainName": {
+      "Type": "String"
+    },
     "accountNumber": {
       "Type": "String"
     }
@@ -246,7 +249,16 @@
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketName": {
-          "Ref": "codeDeployS3Bucket"
+          "Fn::Join": [
+            "",
+            [
+              "code-deploy."
+              ,
+              {
+                "Ref": "ParamDomainName"
+              }
+            ]
+          ]
         },
         "Tags": [
           {

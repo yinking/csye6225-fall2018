@@ -3,6 +3,9 @@
     "stackName": {
       "Type": "String"
     },
+    "ParamDomainName": {
+      "Type": "String"
+    },
     "awsBucketName": {
       "Type": "String"
     }
@@ -130,7 +133,15 @@
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketName": {
-          "Ref": "awsBucketName"
+          "Fn::Join": [
+            "",
+            [
+              {
+                "Ref": "ParamDomainName"
+              },
+              "csye6225.com"
+            ]
+          ]
         },
         "Tags": [
           {
