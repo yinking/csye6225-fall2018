@@ -3,7 +3,7 @@
     "stackName": {
       "Type": "String"
     },
-    "ParamDomainName": {
+    "domainName": {
       "Type": "String"
     },
     "awsBucketName": {
@@ -137,7 +137,7 @@
             "",
             [
               {
-                "Ref": "ParamDomainName"
+                "Ref": "domainName"
               },
               "csye6225.com"
             ]
