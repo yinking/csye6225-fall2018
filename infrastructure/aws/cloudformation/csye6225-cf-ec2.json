@@ -166,6 +166,26 @@
                           ]
                         ]
                       },
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "-DtopicArn=",
+                            {
+                              "Fn::Join": [
+                                "",
+                                [
+                                  "arn:aws:sns:us-east-1:",
+                                  {
+                                    "Ref": "accountNumber"
+                                  },
+                                  ":password_reset"
+                                ]
+                              ]
+                            }
+                          ]
+                        ]
+                      },
                       "\"' > setenv.sh"
                     ]
                   ]
