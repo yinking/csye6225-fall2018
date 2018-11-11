@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 @RestController
@@ -46,7 +47,9 @@ public class UserController {
     }
 
     @PostMapping("/reset")
-    public void reset(@RequestBody String email, HttpServletResponse response) {
+    public void reset(@RequestBody Map<String, Object> payload, HttpServletResponse response) {
+        String email=(String)payload.get("email");
+        System.out.println(email);
         User user = userRepository.findByEmail(email);
         if (user == null) {
             myException.sendError(403, "User not exist", response);
