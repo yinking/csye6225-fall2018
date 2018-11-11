@@ -4,6 +4,7 @@ import com.example.demo.configuration.AmazonClient;
 import com.example.demo.entity.Attachment;
 import com.example.demo.entity.Transaction;
 import com.example.demo.entity.User;
+import com.example.demo.exception.MyException;
 import com.example.demo.repository.AttachmentRepository;
 import com.example.demo.repository.TransactionRepository;
 import com.example.demo.repository.UserRepository;
@@ -24,10 +25,10 @@ import java.util.UUID;
 public class AttachmentController {
 
     @Value("${localLocation}")
-    private String localLocation;
+    String localLocation;
 
     @Autowired
-    private AmazonClient amazonClient;
+    AmazonClient amazonClient;
 
     @Autowired
     UserRepository userRepository;
@@ -38,6 +39,9 @@ public class AttachmentController {
     @Autowired
     AttachmentRepository attachmentRepository;
 
+    @Autowired
+    MyException myException;
+
     private Transaction getTransaction(Authentication authentication, UUID id) {
         User user = userRepository.findByUsername(authentication.getName());
         return transactionRepository.findByIdAndUser(id, user);
@@ -47,7 +51,7 @@ public class AttachmentController {
     public List<Attachment> get(@PathVariable UUID id, Authentication authentication, HttpServletResponse response) {
         Transaction transaction = getTransaction(authentication, id);
         if (transaction == null) {
-            response.setStatus(403);
+            myException.sendError(403, "Transaction not exist", response);
             return null;
         }
         return attachmentRepository.findByTransaction(transaction);
@@ -57,7 +61,7 @@ public class AttachmentController {
     public Attachment post(@RequestParam(value = "file") MultipartFile file, @PathVariable UUID id, Authentication authentication, HttpServletResponse response) {
         Transaction transaction = getTransaction(authentication, id);
         if (transaction == null) {
-            response.setStatus(403);
+            myException.sendError(403, "Transaction not exist", response);
             return null;
         }
         Attachment attachment = new Attachment();
@@ -80,9 +84,13 @@ public class AttachmentController {
     @PutMapping("/{idAttachments}")
     public Attachment put(@RequestParam(value = "file") MultipartFile file, @PathVariable UUID id, @PathVariable UUID idAttachments, Authentication authentication, HttpServletResponse response) {
         Transaction transaction = getTransaction(authentication, id);
+        if (transaction == null) {
+            myException.sendError(403, "Transaction not exist", response);
+            return null;
+        }
         Attachment attachment = attachmentRepository.findByIdAndTransaction(idAttachments, transaction);
         if (attachment == null) {
-            response.setStatus(403);
+            myException.sendError(403, "Attachment not exist", response);
             return null;
         }
         String oldFileName = amazonClient.deleteFile(attachment.getUrl());
@@ -104,9 +112,12 @@ public class AttachmentController {
     @DeleteMapping("/{idAttachments}")
     public void delete(@PathVariable UUID id, @PathVariable UUID idAttachments, Authentication authentication, HttpServletResponse response) {
         Transaction transaction = getTransaction(authentication, id);
+        if (transaction == null) {
+            myException.sendError(403, "Transaction not exist", response);
+        }
         Attachment attachment = attachmentRepository.findByIdAndTransaction(idAttachments, transaction);
         if (attachment == null) {
-            response.setStatus(403);
+            myException.sendError(403, "Attachment not exist", response);
         } else {
             String oldFileName = amazonClient.deleteFile(attachment.getUrl());
             new File(localLocation + oldFileName).delete();
