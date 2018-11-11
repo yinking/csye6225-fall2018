@@ -25,10 +25,10 @@ import java.util.UUID;
 public class AttachmentController {
 
     @Value("${localLocation}")
-    private String localLocation;
+    String localLocation;
 
     @Autowired
-    private AmazonClient amazonClient;
+    AmazonClient amazonClient;
 
     @Autowired
     UserRepository userRepository;
