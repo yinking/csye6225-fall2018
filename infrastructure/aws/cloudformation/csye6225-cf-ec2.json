@@ -6,7 +6,7 @@
     "accountNumber": {
       "Type": "String"
     },
-    "awsBucketName": {
+    "domainName": {
       "Type": "String"
     },
     "localLocation": {
@@ -16,12 +16,6 @@
       "Type": "String"
     },
     "awsSecretKey": {
-      "Type": "String"
-    },
-    "topicARN": {
-      "Type": "String"
-    },
-    "endpoint": {
       "Type": "String"
     }
   },
@@ -159,7 +153,15 @@
                           [
                             "-DawsBucketName=",
                             {
-                              "Ref": "awsBucketName"
+                              "Fn::Join": [
+                                "",
+                                [
+                                  {
+                                    "Ref": "domainName"
+                                  },
+                                  ".csye6225.com"
+                                ]
+                              ]
                             }
                           ]
                         ]
@@ -246,18 +248,81 @@
         }
       }
     },
+    "LambdaExecutionRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccesswithDataPipeline"
+        ],
+        "RoleName": "LambdaExecutionRole"
+      }
+    },
+    "myLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Handler": "index.handler",
+        "Role": {
+          "Fn::GetAtt": [
+            "LambdaExecutionRole",
+            "Arn"
+          ]
+        },
+        "Code": {
+          "S3Bucket": {
+            "Fn::Join": [
+              "",
+              [
+                "lambda-functions.",
+                {
+                  "Ref": "domainName"
+                }
+              ]
+            ]
+          },
+          "S3Key": "myLambda.zip"
+        },
+        "Runtime": "nodejs8.10",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Ref": "stackName"
+            }
+          }
+        ]
+      }
+    },
     "mySNSTopic": {
       "Type": "AWS::SNS::Topic",
       "Properties": {
         "Subscription": [
           {
-            "Endpoint": { 
-            	"Ref": "endpoint"
+            "Endpoint": {
+              "Fn::GetAtt": [
+                "myLambdaFunction",
+                "Arn"
+              ]
             },
-            "Protocol" : "email"
+            "Protocol": "lambda"
           }
         ],
-        "TopicName": "csye6225-SNSTopic"
+        "TopicName": "password_reset"
       }
     }
   }
