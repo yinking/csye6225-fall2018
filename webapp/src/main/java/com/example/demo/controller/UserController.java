@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.entity.User;
+import com.example.demo.exception.MyException;
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,24 +21,37 @@ public class UserController {
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    @Autowired
+    MyException myException;
+
     @GetMapping
     public List<User> get() {
         return userRepository.findAll();
     }
 
     @PostMapping("/register")
-    public User post(@RequestBody User user, HttpServletResponse response) {
+    public User register(@RequestBody User user, HttpServletResponse response) {
         String pattern = "[a-zA-Z0-9.]+@[a-zA-Z0-9]+(.[a-zA-Z0-9]+)+";
         if (Pattern.matches(pattern, user.getEmail())) {
-            User existStudent = userRepository.findByEmail(user.getEmail());
-            if (existStudent == null) {
+            User existUser = userRepository.findByEmail(user.getEmail());
+            if (existUser == null) {
                 user.setUsername(user.getEmail());
                 user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
                 userRepository.save(user);
                 return user;
             }
         }
-        response.setStatus(403);
+        myException.sendError(403, "User exist", response);
         return null;
+    }
+
+    @PostMapping("/reset")
+    public void reset(@RequestBody String email, HttpServletResponse response) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            myException.sendError(403, "User not exist", response);
+        } else {
+            System.out.println(email);
+        }
     }
 }

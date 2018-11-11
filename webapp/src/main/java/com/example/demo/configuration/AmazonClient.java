@@ -18,9 +18,6 @@ public class AmazonClient {
 
     private AmazonS3 s3Client;
 
-    @Value("${awsEndpointUrl}")
-    private String endpointUrl;
-
     @Value("${awsBucketName}")
     private String bucketName;
 
@@ -39,7 +36,7 @@ public class AmazonClient {
 
     public String uploadFile(File file, String fileName) {
         s3Client.putObject(new PutObjectRequest(bucketName, fileName, file).withCannedAcl(CannedAccessControlList.PublicRead));
-        return endpointUrl + "/" + bucketName + "/" + fileName;
+        return "https://s3.us-east-1.amazonaws.com/" + bucketName + "/" + fileName;
     }
 
     public String deleteFile(String url) {
