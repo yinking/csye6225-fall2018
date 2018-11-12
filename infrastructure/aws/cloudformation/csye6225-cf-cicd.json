@@ -142,7 +142,7 @@
         ]
       }
     },
-    "CodeDeployEC2ServiceRole": {
+    "EC2ServiceRole": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -173,9 +173,10 @@
                 ":policy/CodeDeploy-EC2-S3"
               ]
             ]
-          }
+          },
+          "arn:aws:iam::aws:policy/CloudWatchAgentAdminPolicy"
         ],
-        "RoleName": "CodeDeployEC2ServiceRole"
+        "RoleName": "EC2ServiceRole"
       },
       "DependsOn": "CodeDeployEC2S3"
     },
@@ -204,12 +205,38 @@
         "RoleName": "CodeDeployServiceRole"
       }
     },
+    "LambdaExecutionRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess",
+          "arn:aws:iam::aws:policy/AmazonSESFullAccess"
+        ],
+        "RoleName": "LambdaExecutionRole"
+      }
+    },
     "myIAMInstanceProfile": {
       "Type": "AWS::IAM::InstanceProfile",
       "Properties": {
         "Roles": [
           {
-            "Ref": "CodeDeployEC2ServiceRole"
+            "Ref": "EC2ServiceRole"
           }
         ]
       }
@@ -221,8 +248,7 @@
           "Fn::Join": [
             "",
             [
-              "code-deploy."
-              ,
+              "code-deploy.",
               {
                 "Ref": "domainName"
               }
@@ -247,6 +273,28 @@
       },
       "Export": {
         "Name": "myIAMInstanceProfile"
+      }
+    },
+    "CodeDeployServiceRoleArnOutput": {
+      "Value": {
+        "Fn::GetAtt": [
+          "CodeDeployServiceRole",
+          "Arn"
+        ]
+      },
+      "Export": {
+        "Name": "CodeDeployServiceRoleArn"
+      }
+    },
+    "LambdaExecutionRoleArnOutput": {
+      "Value": {
+        "Fn::GetAtt": [
+          "LambdaExecutionRole",
+          "Arn"
+        ]
+      },
+      "Export": {
+        "Name": "LambdaExecutionRoleArn"
       }
     }
   }
