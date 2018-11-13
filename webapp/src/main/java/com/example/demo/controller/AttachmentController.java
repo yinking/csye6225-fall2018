@@ -8,6 +8,7 @@ import com.example.demo.exception.MyException;
 import com.example.demo.repository.AttachmentRepository;
 import com.example.demo.repository.TransactionRepository;
 import com.example.demo.repository.UserRepository;
+import com.timgroup.statsd.StatsDClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -41,6 +42,9 @@ public class AttachmentController {
 
     @Autowired
     MyException myException;
+
+    @Autowired
+    private StatsDClient statsDClient;
 
     private Transaction getTransaction(Authentication authentication, UUID id) {
         User user = userRepository.findByUsername(authentication.getName());

@@ -69,11 +69,37 @@
             <artifactId>aws-java-sdk</artifactId>
             <version>1.11.447</version>
         </dependency>
+
         <dependency>
             <groupId>com.amazonaws.proprot</groupId>
             <artifactId>proprot</artifactId>
             <version>1.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>io.dropwizard.metrics</groupId>
+            <artifactId>metrics-core</artifactId>
+            <version>4.0.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.timgroup</groupId>
+            <artifactId>java-statsd-client</artifactId>
+            <version>3.1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.ubercraft.statsd</groupId>
+            <artifactId>statsd-over-slf4j</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.flozano.statsd-netty</groupId>
+            <artifactId>statsd-netty</artifactId>
+            <version>0.1.4</version>
+        </dependency>
+
     </dependencies>
 
     <build>

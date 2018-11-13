@@ -5,6 +5,7 @@ import com.example.demo.entity.User;
 import com.example.demo.exception.MyException;
 import com.example.demo.repository.TransactionRepository;
 import com.example.demo.repository.UserRepository;
+import com.timgroup.statsd.StatsDClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +26,9 @@ public class TransactionController {
 
     @Autowired
     MyException myException;
+
+    @Autowired
+    private StatsDClient statsDClient;
 
     private User getAuthenticationUser(Authentication authentication) {
         return userRepository.findByUsername(authentication.getName());
