@@ -56,6 +56,6 @@ public class AmazonClient {
     }
 
     public void publish(String email) {
-        snsClient.publish(new PublishRequest(topicArn, "email:" + email));
+        snsClient.publish(new PublishRequest(topicArn, email));
     }
 }
