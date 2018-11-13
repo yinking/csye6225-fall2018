@@ -67,7 +67,12 @@
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk</artifactId>
-            <version>1.11.423</version>
+            <version>1.11.447</version>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws.proprot</groupId>
+            <artifactId>proprot</artifactId>
+            <version>1.0</version>
         </dependency>
     </dependencies>
 
