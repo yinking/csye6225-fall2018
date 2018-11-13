@@ -333,6 +333,12 @@
           [
             {
               "Ref": "mySubnet4"
+            },
+            {
+              "Ref": "mySubnet5"
+            },
+            {
+              "Ref": "mySubnet6"
             }
           ]
         ]
