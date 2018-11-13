@@ -58,6 +58,7 @@ public class UserController {
             myException.sendError(403, "User not exist", response);
         } else {
             amazonClient.publish(email);
+            System.out.println(email);
         }
     }
 }
