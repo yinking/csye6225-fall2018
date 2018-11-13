@@ -332,13 +332,7 @@
           ",",
           [
             {
-              "Ref": "mySubnet1"
-            },
-            {
-              "Ref": "mySubnet2"
-            },
-            {
-              "Ref": "mySubnet3"
+              "Ref": "mySubnet4"
             }
           ]
         ]
