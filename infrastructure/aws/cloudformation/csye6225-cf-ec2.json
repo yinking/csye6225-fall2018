@@ -316,6 +316,19 @@
         ],
         "TopicName": "password_reset"
       }
+    },
+    "myLambdaPermission": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Ref": "myLambdaFunction"
+        },
+        "Principal": "sns.amazonaws.com",
+        "SourceArn": {
+          "Ref": "mySNSTopic"
+        }
+      }
     }
   }
 }
