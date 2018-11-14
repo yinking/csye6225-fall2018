@@ -17,6 +17,7 @@ public class MetricsClient {
     }
 
     public void incrementCounter(String key) {
+        System.out.println(key);
         this.statsDClient.incrementCounter(key);
     }
 }
