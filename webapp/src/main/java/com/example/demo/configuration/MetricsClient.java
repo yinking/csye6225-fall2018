@@ -13,11 +13,10 @@ public class MetricsClient {
 
     @PostConstruct
     public void metricsClient() {
-        this.statsDClient = new NonBlockingStatsDClient("", "localhost", 8125);
+        this.statsDClient = new NonBlockingStatsDClient("csye6225", "localhost", 8125);
     }
 
     public void incrementCounter(String key) {
-        System.out.println(key);
         this.statsDClient.incrementCounter(key);
     }
 }
