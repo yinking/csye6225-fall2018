@@ -19,9 +19,6 @@ import java.util.regex.Pattern;
 public class UserController {
 
     @Autowired
-    private MetricsClient metricsClient;
-
-    @Autowired
     AmazonClient amazonClient;
 
     @Autowired
@@ -56,7 +53,6 @@ public class UserController {
 
     @PostMapping("/reset")
     public void reset(@RequestBody Map<String, Object> payload, HttpServletResponse response) {
-        metricsClient.incrementCounter("/user/reset.post");
         String email = (String) payload.get("email");
         User user = userRepository.findByEmail(email);
         if (user == null) {
