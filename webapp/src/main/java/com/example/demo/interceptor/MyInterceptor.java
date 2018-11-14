@@ -16,7 +16,6 @@ public class MyInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         metricsClient.incrementCounter(request.getRequestURL().toString() + "-" + request.getMethod());
-        System.out.println(request.getRequestURL().toString() + "-" + request.getMethod());
         return true;
     }
 }
