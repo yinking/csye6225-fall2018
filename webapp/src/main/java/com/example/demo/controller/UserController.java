@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.configuration.AmazonClient;
+import com.example.demo.configuration.MetricsClient;
 import com.example.demo.entity.User;
 import com.example.demo.exception.MyException;
 import com.example.demo.repository.UserRepository;
