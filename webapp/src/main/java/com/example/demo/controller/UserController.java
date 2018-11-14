@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.configuration.AmazonClient;
+import com.example.demo.configuration.MetricsClient;
 import com.example.demo.entity.User;
 import com.example.demo.exception.MyException;
 import com.example.demo.repository.UserRepository;
@@ -16,6 +17,9 @@ import java.util.regex.Pattern;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+
+    @Autowired
+    private MetricsClient metricsClient;
 
     @Autowired
     AmazonClient amazonClient;
@@ -52,6 +56,7 @@ public class UserController {
 
     @PostMapping("/reset")
     public void reset(@RequestBody Map<String, Object> payload, HttpServletResponse response) {
+        metricsClient.incrementCounter("/user/reset.post");
         String email = (String) payload.get("email");
         User user = userRepository.findByEmail(email);
         if (user == null) {
