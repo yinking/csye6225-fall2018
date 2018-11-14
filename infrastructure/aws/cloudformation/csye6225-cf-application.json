@@ -116,6 +116,10 @@
           "ReadCapacityUnits": "5",
           "WriteCapacityUnits": "5"
         },
+        "TimeToLiveSpecification": {
+          "AttributeName": "ttl",
+          "Enabled": "true"
+        },
         "Tags": [
           {
             "Key": "Name",
