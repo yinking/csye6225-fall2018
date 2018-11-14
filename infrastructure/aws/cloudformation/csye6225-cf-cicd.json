@@ -226,7 +226,8 @@
         },
         "ManagedPolicyArns": [
           "arn:aws:iam::aws:policy/AWSLambdaFullAccess",
-          "arn:aws:iam::aws:policy/AmazonSESFullAccess"
+          "arn:aws:iam::aws:policy/AmazonSESFullAccess",
+          "arn:aws:iam::aws:policy/AmazonRoute53FullAccess"
         ],
         "RoleName": "LambdaExecutionRole"
       }
