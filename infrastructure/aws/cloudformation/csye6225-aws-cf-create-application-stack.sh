@@ -1,7 +1,9 @@
 . ./config.sh
 if [ -n "$1" ]
 then
-	aws cloudformation create-stack --stack-name $1 --template-body file://csye6225-cf-application.json --parameters ParameterKey=Name,ParameterValue=$1"-csye6225-" ParameterKey=accountNumber,ParameterValue=$accountNumber ParameterKey=localLocation,ParameterValue=$localLocation ParameterKey=awsAccessKeyId,ParameterValue=$awsAccessKeyId ParameterKey=awsSecretKey,ParameterValue=$awsSecretKey ParameterKey=awsBucketName,ParameterValue=$awsBucketName
+    	domainName=$(aws route53 list-hosted-zones --query "HostedZones[0].Name" --output text)
+	domainName=${domainName%?}
+	aws cloudformation create-stack --stack-name $1 --template-body file://csye6225-cf-application.json --parameters ParameterKey=stackName,ParameterValue=$1 ParameterKey=domainName,ParameterValue=$domainName
 else
 	echo "input stack name!"
 fi

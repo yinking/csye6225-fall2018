@@ -1,21 +1,9 @@
 {
   "Parameters": {
-    "Name": {
+    "stackName": {
       "Type": "String"
     },
-    "awsBucketName": {
-      "Type": "String"
-    },
-    "accountNumber": {
-      "Type": "String"
-    },
-    "localLocation": {
-      "Type": "String"
-    },
-    "awsAccessKeyId": {
-      "Type": "String"
-    },
-    "awsSecretKey": {
+    "domainName": {
       "Type": "String"
     }
   },
@@ -32,193 +20,7 @@
           {
             "Key": "Name",
             "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "EC2Volume"
-                ]
-              ]
-            }
-          }
-        ]
-      }
-    },
-    "myEC2Instance": {
-      "Type": "AWS::EC2::Instance",
-      "DependsOn": "myRDSDBInstance",
-      "Properties": {
-        "IamInstanceProfile": {
-          "Fn::ImportValue": "myIAMInstanceProfile"
-        },
-        "ImageId": "ami-9887c6e7",
-        "InstanceType": "t2.micro",
-        "DisableApiTermination": "false",
-        "KeyName": "myKey",
-        "SubnetId": {
-          "Fn::ImportValue": "mySubnet1"
-        },
-        "SecurityGroupIds": [
-          {
-            "Ref": "csye6225webapp"
-          },
-          {
-            "Ref": "csye6225rds"
-          }
-        ],
-        "Volumes": [
-          {
-            "Device": "/dev/sdk",
-            "VolumeId": {
-              "Ref": "myVolume"
-            }
-          }
-        ],
-        "UserData": {
-          "Fn::Base64": {
-            "Fn::Join": [
-              "\n",
-              [
-                "#!/bin/bash -xe ",
-                "yum install ruby ntp wget java-1.8.0-openjdk-devel -y",
-                "systemctl start ntpd",
-                "groupadd tomcat",
-                "useradd -M -s /bin/nologin -g tomcat -d /opt/tomcat tomcat",
-                "cd /tmp",
-                "wget http://apache.mirrors.pair.com/tomcat/tomcat-8/v8.5.34/bin/apache-tomcat-8.5.34.tar.gz",
-                "mkdir /opt/tomcat",
-                "tar xvf apache-tomcat-8*tar.gz -C /opt/tomcat --strip-components=1",
-                "cd /opt/tomcat",
-                "chgrp -R tomcat /opt/tomcat",
-                "chmod -R g+r conf",
-                "chmod g+x conf",
-                "chown -R tomcat webapps/ work/ temp/ logs/",
-                "cd /usr/lib/systemd/system",
-                "touch tomcat.service",
-                "echo '[Unit]' > tomcat.service",
-                "echo 'Description=Apache Tomcat Web Application Container' >> tomcat.service",
-                "echo 'After=syslog.target network.target' >> tomcat.service",
-                "echo '[Service]' >> tomcat.service",
-                "echo 'Type=forking' >> tomcat.service",
-                "echo 'Environment=JAVA_HOME=/usr/lib/jvm/jre' >> tomcat.service",
-                "echo 'Environment=CATALINA_PID=/opt/tomcat/temp/tomcat.pid' >> tomcat.service",
-                "echo 'Environment=CATALINA_HOME=/opt/tomcat' >> tomcat.service",
-                "echo 'Environment=CATALINA_BASE=/opt/tomcat' >> tomcat.service",
-                "echo 'Environment=\"CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC\"' >> tomcat.service",
-                "echo 'Environment=\"JAVA_OPTS=-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom\"' >> tomcat.service",
-                "echo 'ExecStart=/opt/tomcat/bin/startup.sh' >> tomcat.service",
-                "echo 'ExecStop=/bin/kill -15 $MAINPID' >> tomcat.service",
-                "echo 'User=tomcat' >> tomcat.service",
-                "echo 'Group=tomcat' >> tomcat.service",
-                "echo 'UMask=0007' >> tomcat.service",
-                "echo 'RestartSec=10' >> tomcat.service",
-                "echo 'Restart=always' >> tomcat.service",
-                "echo '[Install]' >> tomcat.service",
-                "echo 'WantedBy=multi-user.target' >> tomcat.service",
-                "cd /",
-                "cd /opt/tomcat/bin",
-                "touch setenv.sh",
-                {
-                  "Fn::Join": [
-                    " ",
-                    [
-                      "echo 'JAVA_OPTS=\"$JAVA_OPTS",
-                      "-Djava.net.preferIPv4Stack=true",
-                      "-Djava.net.preferIPv4Addresses=true",
-                      {
-                        "Fn::Join": [
-                          "",
-                          [
-                            "-Dspring.datasource.url=jdbc:postgresql://",
-                            {
-                              "Fn::GetAtt": [
-                                "myRDSDBInstance",
-                                "Endpoint.Address"
-                              ]
-                            },
-                            ":5432/csye6225"
-                          ]
-                        ]
-                      },
-                      "-Dspring.datasource.username=csye6225master",
-                      "-Dspring.datasource.password=csye6225password",
-                      {
-                        "Fn::Join": [
-                          "",
-                          [
-                            "-DlocalLocation=",
-                            {
-                              "Ref": "localLocation"
-                            }
-                          ]
-                        ]
-                      },
-                      {
-                        "Fn::Join": [
-                          "",
-                          [
-                            "-DawsAccessKeyId=",
-                            {
-                              "Ref": "awsAccessKeyId"
-                            }
-                          ]
-                        ]
-                      },
-                      {
-                        "Fn::Join": [
-                          "",
-                          [
-                            "-DawsSecretKey=",
-                            {
-                              "Ref": "awsSecretKey"
-                            }
-                          ]
-                        ]
-                      },
-                      {
-                        "Fn::Join": [
-                          "",
-                          [
-                            "-DawsBucketName=",
-                            {
-                              "Ref": "awsBucketName"
-                            }
-                          ]
-                        ]
-                      },
-                      "\"' > setenv.sh"
-                    ]
-                  ]
-                },
-                "systemctl daemon-reload",
-                "systemctl start tomcat.service",
-                "cd ~",
-                "wget https://aws-codedeploy-us-east-1.s3.amazonaws.com/latest/install",
-                "chmod +x ./install",
-                "./install auto",
-                "service codedeploy-agent start",
-                "cd /",
-                "mkdir /temp",
-                "chmod 777 /temp"
-              ]
-            ]
-          }
-        },
-        "Tags": [
-          {
-            "Key": "Name",
-            "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "EC2Instance"
-                ]
-              ]
+              "Ref": "stackName"
             }
           }
         ]
@@ -261,15 +63,7 @@
           {
             "Key": "Name",
             "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "EC2SecurityGroup1"
-                ]
-              ]
+              "Ref": "stackName"
             }
           }
         ]
@@ -296,15 +90,7 @@
           {
             "Key": "Name",
             "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "EC2SecurityGroup2"
-                ]
-              ]
+              "Ref": "stackName"
             }
           }
         ]
@@ -330,19 +116,15 @@
           "ReadCapacityUnits": "5",
           "WriteCapacityUnits": "5"
         },
+        "TimeToLiveSpecification": {
+          "AttributeName": "ttl",
+          "Enabled": "true"
+        },
         "Tags": [
           {
             "Key": "Name",
             "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "DynamoDBTable"
-                ]
-              ]
+              "Ref": "stackName"
             }
           }
         ]
@@ -352,21 +134,21 @@
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketName": {
-          "Ref": "awsBucketName"
+          "Fn::Join": [
+            "",
+            [
+              {
+                "Ref": "domainName"
+              },
+              ".csye6225.com"
+            ]
+          ]
         },
         "Tags": [
           {
             "Key": "Name",
             "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "S3Bucket"
-                ]
-              ]
+              "Ref": "stackName"
             }
           }
         ]
@@ -376,52 +158,6 @@
       "Type": "AWS::CodeDeploy::Application",
       "Properties": {
         "ApplicationName": "myWebapp"
-      }
-    },
-    "myCodeDeployDeploymentGroup": {
-      "DependsOn": "myEC2Instance",
-      "Type": "AWS::CodeDeploy::DeploymentGroup",
-      "Properties": {
-        "ApplicationName": {
-          "Ref": "myWebapp"
-        },
-        "DeploymentConfigName": "CodeDeployDefault.OneAtATime",
-        "DeploymentGroupName": {
-          "Ref": "myWebapp"
-        },
-        "DeploymentStyle": {
-          "DeploymentType": "IN_PLACE",
-          "DeploymentOption": "WITHOUT_TRAFFIC_CONTROL"
-        },
-        "Ec2TagFilters": [
-          {
-            "Key": "Name",
-            "Type": "KEY_AND_VALUE",
-            "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "EC2Instance"
-                ]
-              ]
-            }
-          }
-        ],
-        "ServiceRoleArn": {
-          "Fn::Join": [
-            "",
-            [
-              "arn:aws:iam::",
-              {
-                "Ref": "accountNumber"
-              },
-              ":role/CodeDeployServiceRole"
-            ]
-          ]
-        }
       }
     },
     "myRDSDBSubnetGroup": {
@@ -440,15 +176,7 @@
           {
             "Key": "Name",
             "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "RDSDBSubnetGroup"
-                ]
-              ]
+              "Ref": "stackName"
             }
           }
         ]
@@ -457,12 +185,12 @@
     "myRDSDBInstance": {
       "Type": "AWS::RDS::DBInstance",
       "Properties": {
-        "AllocatedStorage": "100",
+        "AllocatedStorage": "20",
         "AvailabilityZone": {
           "Fn::ImportValue": "myAvailabilityZone1"
         },
         "DBName": "csye6225",
-        "DBInstanceClass": "db.t2.medium",
+        "DBInstanceClass": "db.t2.micro",
         "DBInstanceIdentifier": "csye6225-spring2018",
         "MultiAZ": "false",
         "Engine": "postgres",
@@ -481,18 +209,55 @@
           {
             "Key": "Name",
             "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "RDSDBInstance"
-                ]
-              ]
+              "Ref": "stackName"
             }
           }
         ]
+      }
+    }
+  },
+  "Outputs": {
+    "myWebAppOutput": {
+      "Value": {
+        "Ref": "myWebapp"
+      },
+      "Export": {
+        "Name": "myWebapp"
+      }
+    },
+    "csye6225WebappOutput": {
+      "Value": {
+        "Ref": "csye6225webapp"
+      },
+      "Export": {
+        "Name": "csye6225webapp"
+      }
+    },
+    "myVolumeOutput": {
+      "Value": {
+        "Ref": "myVolume"
+      },
+      "Export": {
+        "Name": "myVolume"
+      }
+    },
+    "csye6225rdsOutput": {
+      "Value": {
+        "Ref": "csye6225rds"
+      },
+      "Export": {
+        "Name": "csye6225rds"
+      }
+    },
+    "myRDSEndPointOutput": {
+      "Value": {
+        "Fn::GetAtt": [
+          "myRDSDBInstance",
+          "Endpoint.Address"
+        ]
+      },
+      "Export": {
+        "Name": "myRDSEndPoint"
       }
     }
   }

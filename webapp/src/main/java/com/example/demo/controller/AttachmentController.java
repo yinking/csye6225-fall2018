@@ -25,10 +25,10 @@ import java.util.UUID;
 public class AttachmentController {
 
     @Value("${localLocation}")
-    private String localLocation;
+    String localLocation;
 
     @Autowired
-    private AmazonClient amazonClient;
+    AmazonClient amazonClient;
 
     @Autowired
     UserRepository userRepository;
@@ -45,6 +45,10 @@ public class AttachmentController {
     private Transaction getTransaction(Authentication authentication, UUID id) {
         User user = userRepository.findByUsername(authentication.getName());
         return transactionRepository.findByIdAndUser(id, user);
+    }
+
+    private boolean checkExtension(String extension) {
+        return extension.equals(".jpg") || extension.equals(".png") || extension.equals(".jpeg");
     }
 
     @GetMapping
@@ -64,11 +68,20 @@ public class AttachmentController {
             myException.sendError(403, "Transaction not exist", response);
             return null;
         }
+        String originalFilename = file.getOriginalFilename();
+        if (!originalFilename.contains(".")) {
+            myException.sendError(403, "File extension not exist", response);
+            return null;
+        }
+        String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        if (!checkExtension(extension)) {
+            myException.sendError(403, "File extension error", response);
+            return null;
+        }
         Attachment attachment = new Attachment();
         attachment.setTransaction(transaction);
         attachmentRepository.save(attachment);
-        String originalFilename = file.getOriginalFilename();
-        String fileName = attachment.getId() + originalFilename.substring(originalFilename.lastIndexOf("."));
+        String fileName = attachment.getId() + extension;
         File localFile = new File(localLocation + fileName);
         try {
             file.transferTo(localFile);
@@ -93,10 +106,19 @@ public class AttachmentController {
             myException.sendError(403, "Attachment not exist", response);
             return null;
         }
+        String originalFilename = file.getOriginalFilename();
+        if (!originalFilename.contains(".")) {
+            myException.sendError(403, "File extension not exist", response);
+            return null;
+        }
+        String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+        if (!checkExtension(extension)) {
+            myException.sendError(403, "File extension error", response);
+            return null;
+        }
         String oldFileName = amazonClient.deleteFile(attachment.getUrl());
         new File(localLocation + oldFileName).delete();
-        String originalFilename = file.getOriginalFilename();
-        String fileName = attachment.getId() + originalFilename.substring(originalFilename.lastIndexOf("."));
+        String fileName = attachment.getId() + extension;
         File localFile = new File(localLocation + fileName);
         try {
             file.transferTo(localFile);

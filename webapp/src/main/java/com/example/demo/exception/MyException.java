@@ -1,11 +1,11 @@
 package com.example.demo.exception;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@Component
+@Service
 public class MyException {
     public void sendError(int status, String message, HttpServletResponse response) {
         try {
