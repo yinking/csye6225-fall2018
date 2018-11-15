@@ -271,6 +271,7 @@
     "myLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
+        "FunctionName": "myLambdaFunction",
         "Handler": "myLambda/index.handler",
         "Role": {
           "Fn::ImportValue": "LambdaExecutionRoleArn"
