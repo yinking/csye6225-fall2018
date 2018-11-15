@@ -51,8 +51,8 @@ public class UserController {
         return null;
     }
 
-    @PostMapping("/reset")
-    public void reset(@RequestBody Map<String, Object> payload, HttpServletResponse response) {
+    @PostMapping("/forget")
+    public void forget(@RequestBody Map<String, Object> payload, HttpServletResponse response) {
         String email = (String) payload.get("email");
         User user = userRepository.findByEmail(email);
         if (user == null) {
@@ -60,5 +60,10 @@ public class UserController {
         } else {
             amazonClient.publish(email);
         }
+    }
+
+    @PostMapping("/reset")
+    public void reset(@RequestBody Map<String, Object> payload, HttpServletResponse response) {
+        
     }
 }
