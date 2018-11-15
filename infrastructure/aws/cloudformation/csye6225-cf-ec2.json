@@ -1,0 +1,335 @@
+{
+  "Parameters": {
+    "stackName": {
+      "Type": "String"
+    },
+    "accountNumber": {
+      "Type": "String"
+    },
+    "domainName": {
+      "Type": "String"
+    },
+    "localLocation": {
+      "Type": "String"
+    },
+    "awsAccessKeyId": {
+      "Type": "String"
+    },
+    "awsSecretKey": {
+      "Type": "String"
+    }
+  },
+  "Resources": {
+    "myEC2Instance": {
+      "Type": "AWS::EC2::Instance",
+      "Properties": {
+        "IamInstanceProfile": {
+          "Fn::ImportValue": "myIAMInstanceProfile"
+        },
+        "ImageId": "ami-9887c6e7",
+        "InstanceType": "t2.micro",
+        "DisableApiTermination": "false",
+        "KeyName": "myKey",
+        "SubnetId": {
+          "Fn::ImportValue": "mySubnet1"
+        },
+        "SecurityGroupIds": [
+          {
+            "Fn::ImportValue": "csye6225webapp"
+          },
+          {
+            "Fn::ImportValue": "csye6225rds"
+          }
+        ],
+        "Volumes": [
+          {
+            "Device": "/dev/sdk",
+            "VolumeId": {
+              "Fn::ImportValue": "myVolume"
+            }
+          }
+        ],
+        "UserData": {
+          "Fn::Base64": {
+            "Fn::Join": [
+              "\n",
+              [
+                "#!/bin/bash -xe ",
+                "yum install ruby ntp wget java-1.8.0-openjdk-devel -y",
+                "systemctl start ntpd",
+                "wget https://aws-codedeploy-us-east-1.s3.amazonaws.com/latest/install",
+                "chmod +x ./install",
+                "./install auto",
+                "rm ./install",
+                "yum install https://download.postgresql.org/pub/repos/yum/10/redhat/rhel-7-x86_64/pgdg-centos10-10-2.noarch.rpm -y",
+                "yum install postgresql10 -y",
+                "wget https://s3.amazonaws.com/amazoncloudwatch-agent/centos/amd64/latest/amazon-cloudwatch-agent.rpm",
+                "rpm -U ./amazon-cloudwatch-agent.rpm",
+                "rm ./amazon-cloudwatch-agent.rpm",
+                "cd /opt",
+                "touch cloudwatch-config.json",
+                "echo '{\"agent\": {\"metrics_collection_interval\": 10},\"logs\": {\"logs_collected\": {\"files\": {\"collect_list\": [{\"file_path\": \"/opt/tomcat/logs/catalina.out\"}]}},\"log_stream_name\": \"cloudwatch_log_stream\"},\"metrics\": {\"metrics_collected\": {\"statsd\": {\"service_address\": \":8125\",\"metrics_collection_interval\": 10,\"metrics_aggregation_interval\": 0}}}}' > cloudwatch-config.json",
+                "cd /",
+                "groupadd tomcat",
+                "useradd -M -s /bin/nologin -g tomcat -d /opt/tomcat tomcat",
+                "cd /tmp",
+                "wget http://apache.mirrors.pair.com/tomcat/tomcat-8/v8.5.34/bin/apache-tomcat-8.5.34.tar.gz",
+                "mkdir /opt/tomcat",
+                "tar xvf apache-tomcat-8*tar.gz -C /opt/tomcat --strip-components=1",
+                "cd /opt/tomcat",
+                "chgrp -R tomcat /opt/tomcat",
+                "chmod -R g+r conf",
+                "chmod g+x conf",
+                "chown -R tomcat webapps/ work/ temp/ logs/",
+                "cd /usr/lib/systemd/system",
+                "touch tomcat.service",
+                "echo '[Unit]' > tomcat.service",
+                "echo 'Description=Apache Tomcat Web Application Container' >> tomcat.service",
+                "echo 'After=syslog.target network.target' >> tomcat.service",
+                "echo '[Service]' >> tomcat.service",
+                "echo 'Type=forking' >> tomcat.service",
+                "echo 'Environment=JAVA_HOME=/usr/lib/jvm/jre' >> tomcat.service",
+                "echo 'Environment=CATALINA_PID=/opt/tomcat/temp/tomcat.pid' >> tomcat.service",
+                "echo 'Environment=CATALINA_HOME=/opt/tomcat' >> tomcat.service",
+                "echo 'Environment=CATALINA_BASE=/opt/tomcat' >> tomcat.service",
+                "echo 'Environment=\"CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC\"' >> tomcat.service",
+                "echo 'Environment=\"JAVA_OPTS=-Djava.awt.headless=true -Djava.security.egd=file:/dev/./urandom\"' >> tomcat.service",
+                "echo 'ExecStart=/opt/tomcat/bin/startup.sh' >> tomcat.service",
+                "echo 'ExecStop=/bin/kill -15 $MAINPID' >> tomcat.service",
+                "echo 'User=tomcat' >> tomcat.service",
+                "echo 'Group=tomcat' >> tomcat.service",
+                "echo 'UMask=0007' >> tomcat.service",
+                "echo 'RestartSec=10' >> tomcat.service",
+                "echo 'Restart=always' >> tomcat.service",
+                "echo '[Install]' >> tomcat.service",
+                "echo 'WantedBy=multi-user.target' >> tomcat.service",
+                "cd /opt/tomcat/bin",
+                "touch setenv.sh",
+                {
+                  "Fn::Join": [
+                    " ",
+                    [
+                      "echo 'JAVA_OPTS=\"$JAVA_OPTS",
+                      "-Djava.net.preferIPv4Stack=true",
+                      "-Djava.net.preferIPv4Addresses=true",
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "-Dspring.datasource.url=jdbc:postgresql://",
+                            {
+                              "Fn::ImportValue": "myRDSEndPoint"
+                            },
+                            ":5432/csye6225"
+                          ]
+                        ]
+                      },
+                      "-Dspring.datasource.username=csye6225master",
+                      "-Dspring.datasource.password=csye6225password",
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "-DlocalLocation=",
+                            {
+                              "Ref": "localLocation"
+                            }
+                          ]
+                        ]
+                      },
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "-DawsAccessKeyId=",
+                            {
+                              "Ref": "awsAccessKeyId"
+                            }
+                          ]
+                        ]
+                      },
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "-DawsSecretKey=",
+                            {
+                              "Ref": "awsSecretKey"
+                            }
+                          ]
+                        ]
+                      },
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "-DawsBucketName=",
+                            {
+                              "Fn::Join": [
+                                "",
+                                [
+                                  {
+                                    "Ref": "domainName"
+                                  },
+                                  ".csye6225.com"
+                                ]
+                              ]
+                            }
+                          ]
+                        ]
+                      },
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "-DtopicArn=",
+                            {
+                              "Fn::Join": [
+                                "",
+                                [
+                                  "arn:aws:sns:us-east-1:",
+                                  {
+                                    "Ref": "accountNumber"
+                                  },
+                                  ":password_reset"
+                                ]
+                              ]
+                            }
+                          ]
+                        ]
+                      },
+                      "\"' > setenv.sh"
+                    ]
+                  ]
+                },
+                "systemctl daemon-reload",
+                "systemctl start tomcat",
+                "systemctl start codedeploy-agent",
+                "/opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl -a fetch-config -m ec2 -c file:/opt/cloudwatch-config.json -s",
+                "cd /",
+                "mkdir /temp",
+                "chmod 777 /temp"
+              ]
+            ]
+          }
+        },
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Fn::Join": [
+                "-",
+                [
+                  {
+                    "Ref": "stackName"
+                  },
+                  "EC2Instance"
+                ]
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "myCodeDeployDeploymentGroup": {
+      "DependsOn": "myEC2Instance",
+      "Type": "AWS::CodeDeploy::DeploymentGroup",
+      "Properties": {
+        "ApplicationName": {
+          "Fn::ImportValue": "myWebapp"
+        },
+        "DeploymentConfigName": "CodeDeployDefault.OneAtATime",
+        "DeploymentGroupName": {
+          "Fn::ImportValue": "myWebapp"
+        },
+        "DeploymentStyle": {
+          "DeploymentType": "IN_PLACE",
+          "DeploymentOption": "WITHOUT_TRAFFIC_CONTROL"
+        },
+        "Ec2TagFilters": [
+          {
+            "Key": "Name",
+            "Type": "KEY_AND_VALUE",
+            "Value": {
+              "Fn::Join": [
+                "-",
+                [
+                  {
+                    "Ref": "stackName"
+                  },
+                  "EC2Instance"
+                ]
+              ]
+            }
+          }
+        ],
+        "ServiceRoleArn": {
+          "Fn::ImportValue": "CodeDeployServiceRoleArn"
+        }
+      }
+    },
+    "myLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "FunctionName": "myLambdaFunction",
+        "Handler": "myLambda/index.handler",
+        "Role": {
+          "Fn::ImportValue": "LambdaExecutionRoleArn"
+        },
+        "Code": {
+          "S3Bucket": {
+            "Fn::Join": [
+              "",
+              [
+                "lambda-functions.",
+                {
+                  "Ref": "domainName"
+                }
+              ]
+            ]
+          },
+          "S3Key": "myLambda.zip"
+        },
+        "Runtime": "nodejs8.10",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Ref": "stackName"
+            }
+          }
+        ]
+      }
+    },
+    "mySNSTopic": {
+      "Type": "AWS::SNS::Topic",
+      "Properties": {
+        "Subscription": [
+          {
+            "Endpoint": {
+              "Fn::GetAtt": [
+                "myLambdaFunction",
+                "Arn"
+              ]
+            },
+            "Protocol": "lambda"
+          }
+        ],
+        "TopicName": "password_reset"
+      }
+    },
+    "myLambdaPermission": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Ref": "myLambdaFunction"
+        },
+        "Principal": "sns.amazonaws.com",
+        "SourceArn": {
+          "Ref": "mySNSTopic"
+        }
+      }
+    }
+  }
+}

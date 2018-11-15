@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import com.example.demo.configuration.AmazonClient;
+import com.example.demo.configuration.MetricsClient;
 import com.example.demo.entity.User;
 import com.example.demo.exception.MyException;
 import com.example.demo.repository.UserRepository;
@@ -9,11 +11,15 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/user")
 public class UserController {
+
+    @Autowired
+    AmazonClient amazonClient;
 
     @Autowired
     UserRepository userRepository;
@@ -30,11 +36,11 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public User post(@RequestBody User user, HttpServletResponse response) {
+    public User register(@RequestBody User user, HttpServletResponse response) {
         String pattern = "[a-zA-Z0-9.]+@[a-zA-Z0-9]+(.[a-zA-Z0-9]+)+";
         if (Pattern.matches(pattern, user.getEmail())) {
-            User existStudent = userRepository.findByEmail(user.getEmail());
-            if (existStudent == null) {
+            User existUser = userRepository.findByEmail(user.getEmail());
+            if (existUser == null) {
                 user.setUsername(user.getEmail());
                 user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
                 userRepository.save(user);
@@ -43,5 +49,21 @@ public class UserController {
         }
         myException.sendError(403, "User exist", response);
         return null;
+    }
+
+    @PostMapping("/forget")
+    public void forget(@RequestBody Map<String, Object> payload, HttpServletResponse response) {
+        String email = (String) payload.get("email");
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            myException.sendError(403, "User not exist", response);
+        } else {
+            amazonClient.publish(email);
+        }
+    }
+
+    @PostMapping("/reset")
+    public void reset(@RequestBody Map<String, Object> payload, HttpServletResponse response) {
+        
     }
 }

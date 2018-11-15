@@ -1,6 +1,6 @@
 {
   "Parameters": {
-    "Name": {
+    "stackName": {
       "Type": "String"
     }
   },
@@ -14,15 +14,7 @@
           {
             "Key": "Name",
             "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "vpc"
-                ]
-              ]
+              "Ref": "stackName"
             }
           }
         ]
@@ -48,15 +40,7 @@
           {
             "Key": "Name",
             "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "subnet1"
-                ]
-              ]
+              "Ref": "stackName"
             }
           }
         ]
@@ -82,15 +66,7 @@
           {
             "Key": "Name",
             "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "subnet2"
-                ]
-              ]
+              "Ref": "stackName"
             }
           }
         ]
@@ -116,15 +92,7 @@
           {
             "Key": "Name",
             "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "subnet3"
-                ]
-              ]
+              "Ref": "stackName"
             }
           }
         ]
@@ -149,15 +117,7 @@
           {
             "Key": "Name",
             "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "subnet4"
-                ]
-              ]
+              "Ref": "stackName"
             }
           }
         ]
@@ -182,15 +142,7 @@
           {
             "Key": "Name",
             "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "subnet5"
-                ]
-              ]
+              "Ref": "stackName"
             }
           }
         ]
@@ -215,15 +167,7 @@
           {
             "Key": "Name",
             "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "subnet6"
-                ]
-              ]
+              "Ref": "stackName"
             }
           }
         ]
@@ -236,15 +180,7 @@
           {
             "Key": "Name",
             "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "InternetGateway"
-                ]
-              ]
+              "Ref": "stackName"
             }
           }
         ]
@@ -271,15 +207,7 @@
           {
             "Key": "Name",
             "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "public-route-table"
-                ]
-              ]
+              "Ref": "stackName"
             }
           }
         ]
@@ -295,15 +223,7 @@
           {
             "Key": "Name",
             "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "private-route-table"
-                ]
-              ]
+              "Ref": "stackName"
             }
           }
         ]
@@ -377,7 +297,7 @@
     },
     "myRoute": {
       "Type": "AWS::EC2::Route",
-      "DependsOn" : "myVPCGatewayAttachment",
+      "DependsOn": "myVPCGatewayAttachment",
       "Properties": {
         "RouteTableId": {
           "Ref": "myRouteTable1"
@@ -412,13 +332,13 @@
           ",",
           [
             {
-              "Ref": "mySubnet1"
+              "Ref": "mySubnet4"
             },
             {
-              "Ref": "mySubnet2"
+              "Ref": "mySubnet5"
             },
             {
-              "Ref": "mySubnet3"
+              "Ref": "mySubnet6"
             }
           ]
         ]

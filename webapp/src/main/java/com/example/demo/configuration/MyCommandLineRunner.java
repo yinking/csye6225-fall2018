@@ -1,7 +1,5 @@
 package com.example.demo.configuration;
 
-import com.example.demo.entity.Transaction;
-import com.example.demo.entity.User;
 import com.example.demo.repository.TransactionRepository;
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

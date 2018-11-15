@@ -1,9 +1,9 @@
 {
   "Parameters": {
-    "Name": {
+    "stackName": {
       "Type": "String"
     },
-    "codeDeployS3Bucket": {
+    "domainName": {
       "Type": "String"
     },
     "accountNumber": {
@@ -142,7 +142,7 @@
         ]
       }
     },
-    "CodeDeployEC2ServiceRole": {
+    "EC2ServiceRole": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -173,9 +173,10 @@
                 ":policy/CodeDeploy-EC2-S3"
               ]
             ]
-          }
+          },
+          "arn:aws:iam::aws:policy/CloudWatchAgentAdminPolicy"
         ],
-        "RoleName": "CodeDeployEC2ServiceRole"
+        "RoleName": "EC2ServiceRole"
       },
       "DependsOn": "CodeDeployEC2S3"
     },
@@ -204,12 +205,39 @@
         "RoleName": "CodeDeployServiceRole"
       }
     },
+    "LambdaExecutionRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/AWSLambdaFullAccess",
+          "arn:aws:iam::aws:policy/AmazonSESFullAccess",
+          "arn:aws:iam::aws:policy/AmazonRoute53FullAccess"
+        ],
+        "RoleName": "LambdaExecutionRole"
+      }
+    },
     "myIAMInstanceProfile": {
       "Type": "AWS::IAM::InstanceProfile",
       "Properties": {
         "Roles": [
           {
-            "Ref": "CodeDeployEC2ServiceRole"
+            "Ref": "EC2ServiceRole"
           }
         ]
       }
@@ -218,21 +246,21 @@
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "BucketName": {
-          "Ref": "codeDeployS3Bucket"
+          "Fn::Join": [
+            "",
+            [
+              "code-deploy.",
+              {
+                "Ref": "domainName"
+              }
+            ]
+          ]
         },
         "Tags": [
           {
             "Key": "Name",
             "Value": {
-              "Fn::Join": [
-                "",
-                [
-                  {
-                    "Ref": "Name"
-                  },
-                  "CodeDeployS3Bucket"
-                ]
-              ]
+              "Ref": "stackName"
             }
           }
         ]
@@ -246,6 +274,28 @@
       },
       "Export": {
         "Name": "myIAMInstanceProfile"
+      }
+    },
+    "CodeDeployServiceRoleArnOutput": {
+      "Value": {
+        "Fn::GetAtt": [
+          "CodeDeployServiceRole",
+          "Arn"
+        ]
+      },
+      "Export": {
+        "Name": "CodeDeployServiceRoleArn"
+      }
+    },
+    "LambdaExecutionRoleArnOutput": {
+      "Value": {
+        "Fn::GetAtt": [
+          "LambdaExecutionRole",
+          "Arn"
+        ]
+      },
+      "Export": {
+        "Name": "LambdaExecutionRoleArn"
       }
     }
   }
