@@ -77,17 +77,21 @@
         </dependency>
 
         <dependency>
+<<<<<<< HEAD
             <groupId>io.dropwizard.metrics</groupId>
             <artifactId>metrics-core</artifactId>
             <version>4.0.2</version>
         </dependency>
 
         <dependency>
+=======
+>>>>>>> c2aff8ff4286a8bdaa7776ac87db0e8df2cc4879
             <groupId>com.timgroup</groupId>
             <artifactId>java-statsd-client</artifactId>
             <version>3.1.0</version>
         </dependency>
 
+<<<<<<< HEAD
         <dependency>
             <groupId>org.ubercraft.statsd</groupId>
             <artifactId>statsd-over-slf4j</artifactId>
@@ -100,6 +104,8 @@
             <version>0.1.4</version>
         </dependency>
 
+=======
+>>>>>>> c2aff8ff4286a8bdaa7776ac87db0e8df2cc4879
     </dependencies>
 
     <build>
