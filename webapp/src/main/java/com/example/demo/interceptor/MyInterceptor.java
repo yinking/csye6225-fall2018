@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class MyInterceptor implements HandlerInterceptor {
     @Autowired
-    private MetricsClient metricsClient;
+    MetricsClient metricsClient;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
