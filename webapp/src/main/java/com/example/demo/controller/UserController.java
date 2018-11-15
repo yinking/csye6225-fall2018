@@ -1,11 +1,9 @@
 package com.example.demo.controller;
 
 import com.example.demo.configuration.AmazonClient;
-import com.example.demo.configuration.MetricsClient;
 import com.example.demo.entity.User;
 import com.example.demo.exception.MyException;
 import com.example.demo.repository.UserRepository;
-import com.timgroup.statsd.StatsDClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -31,9 +29,6 @@ public class UserController {
     @Autowired
     MyException myException;
 
-    @Autowired
-    private StatsDClient statsDClient;
-
     @GetMapping
     public List<User> get() {
         return userRepository.findAll();
@@ -41,9 +36,6 @@ public class UserController {
 
     @PostMapping("/register")
     public User register(@RequestBody User user, HttpServletResponse response) {
-
-        statsDClient.incrementCounter("endpoint.register.http.post");
-
         String pattern = "[a-zA-Z0-9.]+@[a-zA-Z0-9]+(.[a-zA-Z0-9]+)+";
         if (Pattern.matches(pattern, user.getEmail())) {
             User existUser = userRepository.findByEmail(user.getEmail());
@@ -60,9 +52,6 @@ public class UserController {
 
     @PostMapping("/reset")
     public void reset(@RequestBody Map<String, Object> payload, HttpServletResponse response) {
-
-        statsDClient.incrementCounter("endpoint.reset.http.post");
-
         String email = (String) payload.get("email");
         User user = userRepository.findByEmail(email);
         if (user == null) {
