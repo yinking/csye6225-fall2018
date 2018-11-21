@@ -2,7 +2,7 @@ install: true
 
 script:
 - cd webapp
-- mvn clean package
+- mvn clean package -DskipTests
 - cd ..
 
 after_success:
