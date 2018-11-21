@@ -20,6 +20,8 @@ deploy:
   skip_cleanup: true
   access_key_id: $travis_access_key_id
   secret_access_key: $travis_secret_access_key
+  on:
+    all_branches: true
 
 - provider: codedeploy
   access_key_id: $travis_access_key_id
@@ -31,3 +33,5 @@ deploy:
   region: us-east-1
   secret_access_key: $travis_secret_access_key
   wait-until-deployed: true
+  on:
+    all_branches: true
