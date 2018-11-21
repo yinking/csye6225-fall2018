@@ -1,20 +1,8 @@
-language: java
-jdk:
-- oraclejdk8
-
-sudo: false
-
 install: true
-
-services:
-  - postgresql
-
-before_script:
-  - psql -c 'create database db5;' -U postgres
 
 script:
 - cd webapp
-- mvn clean package
+- mvn clean package -DskipTests
 - cd ..
 
 after_success:
@@ -33,17 +21,17 @@ deploy:
   access_key_id: $travis_access_key_id
   secret_access_key: $travis_secret_access_key
   on:
-    branch: Assignment7
+    all_branches: true
 
 - provider: codedeploy
   access_key_id: $travis_access_key_id
   bucket: $code_deploy_s3_bucket
   key: csye6225-web-app-${TRAVIS_JOB_NUMBER}.zip
   bundle_type: zip
-  application: $application
-  deployment_group: $deployment_group
+  application: myWebapp
+  deployment_group: myWebapp
   region: us-east-1
   secret_access_key: $travis_secret_access_key
   wait-until-deployed: true
   on:
-    branch: Assignment7
+    all_branches: true

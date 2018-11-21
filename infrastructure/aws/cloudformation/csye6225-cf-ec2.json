@@ -9,9 +9,6 @@
     "domainName": {
       "Type": "String"
     },
-    "localLocation": {
-      "Type": "String"
-    },
     "awsAccessKeyId": {
       "Type": "String"
     },
@@ -126,17 +123,7 @@
                       },
                       "-Dspring.datasource.username=csye6225master",
                       "-Dspring.datasource.password=csye6225password",
-                      {
-                        "Fn::Join": [
-                          "",
-                          [
-                            "-DlocalLocation=",
-                            {
-                              "Ref": "localLocation"
-                            }
-                          ]
-                        ]
-                      },
+                      "-DlocalLocation=/temp/",
                       {
                         "Fn::Join": [
                           "",
@@ -163,37 +150,9 @@
                         "Fn::Join": [
                           "",
                           [
-                            "-DawsBucketName=",
+                            "-accountNumber=",
                             {
-                              "Fn::Join": [
-                                "",
-                                [
-                                  {
-                                    "Ref": "domainName"
-                                  },
-                                  ".csye6225.com"
-                                ]
-                              ]
-                            }
-                          ]
-                        ]
-                      },
-                      {
-                        "Fn::Join": [
-                          "",
-                          [
-                            "-DtopicArn=",
-                            {
-                              "Fn::Join": [
-                                "",
-                                [
-                                  "arn:aws:sns:us-east-1:",
-                                  {
-                                    "Ref": "accountNumber"
-                                  },
-                                  ":password_reset"
-                                ]
-                              ]
+                              "Ref": "accountNumber"
                             }
                           ]
                         ]
