@@ -24,7 +24,7 @@ public class AmazonClient {
 
     private AmazonSNS snsClient;
 
-    private String region = "us-east-1";
+    private String awsBucketName;
 
     @Value("${accountNumber}")
     String accountNumber;
@@ -34,33 +34,30 @@ public class AmazonClient {
 
     @Value("${awsSecretKey}")
     private String awsSecretKey;
-//
-//    @Value("${topicArn}")
-//    private String topicArn;
 
     @PostConstruct
     public void init() {
+        String region = "us-east-1";
         BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(this.awsAccessKeyId, this.awsSecretKey);
-        String domain=AmazonRoute53ClientBuilder.standard().withRegion(this.region).withCredentials(new AWSStaticCredentialsProvider(basicAWSCredentials)).build().listHostedZones().getHostedZones().get(0).getName();
-        System.out.println(domain);
-//        this.s3Client = AmazonS3ClientBuilder.standard().withRegion(this.region).withCredentials(new AWSStaticCredentialsProvider(basicAWSCredentials)).build();
-//        this.snsClient = AmazonSNSClientBuilder.standard().withRegion(this.region).withCredentials(new AWSStaticCredentialsProvider(basicAWSCredentials)).build();
+        String domain = AmazonRoute53ClientBuilder.standard().withRegion(region).withCredentials(new AWSStaticCredentialsProvider(basicAWSCredentials)).build().listHostedZones().getHostedZones().get(0).getName();
+        domain = domain.substring(0, domain.length() - 1);
+        this.awsBucketName = domain + ".csye6225.com";
+        this.s3Client = AmazonS3ClientBuilder.standard().withRegion(region).withCredentials(new AWSStaticCredentialsProvider(basicAWSCredentials)).build();
+        this.snsClient = AmazonSNSClientBuilder.standard().withRegion(region).withCredentials(new AWSStaticCredentialsProvider(basicAWSCredentials)).build();
     }
 
     public String uploadFile(File file, String fileName) {
-//        s3Client.putObject(new PutObjectRequest(awsBucketName, fileName, file).withCannedAcl(CannedAccessControlList.PublicRead));
-//        return "https://s3.us-east-1.amazonaws.com/" + awsBucketName + "/" + fileName;
-        return "";
+        s3Client.putObject(new PutObjectRequest(this.awsBucketName, fileName, file).withCannedAcl(CannedAccessControlList.PublicRead));
+        return "https://s3.us-east-1.amazonaws.com/" + this.awsBucketName + "/" + fileName;
     }
 
     public String deleteFile(String url) {
-//        String fileName = url.substring(url.lastIndexOf("/") + 1);
-//        s3Client.deleteObject(new DeleteObjectRequest(awsBucketName, fileName));
-//        return fileName;
-        return "";
+        String fileName = url.substring(url.lastIndexOf("/") + 1);
+        s3Client.deleteObject(new DeleteObjectRequest(this.awsBucketName, fileName));
+        return fileName;
     }
 
     public void publish(String email) {
-        //snsClient.publish(new PublishRequest(topicArn, email));
+        snsClient.publish(new PublishRequest("arn:aws:sns:us-east-1:" + accountNumber + ":password_reset", email));
     }
 }
