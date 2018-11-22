@@ -26,21 +26,21 @@ public class AmazonClient {
 
     private String region = "us-east-1";
 
-    @Value("${awsBucketName}")
-    private String awsBucketName;
-
-    @Value("${awsAccessKeyId}")
-    private String awsAccessKeyId;
-
-    @Value("${awsSecretKey}")
-    private String awsSecretKey;
-
-    @Value("${topicArn}")
-    private String topicArn;
+    @Value("${accountNumber}")
+    String accountNumber;
+//
+//    @Value("${awsAccessKeyId}")
+//    private String awsAccessKeyId;
+//
+//    @Value("${awsSecretKey}")
+//    private String awsSecretKey;
+//
+//    @Value("${topicArn}")
+//    private String topicArn;
 
     @PostConstruct
     public void init() {
-        BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(this.awsAccessKeyId, this.awsSecretKey);
+        //BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(this.awsAccessKeyId, this.awsSecretKey);
         String domain=AmazonRoute53ClientBuilder.standard().build().listHostedZones().getHostedZones().get(0).getName();
         System.out.println(domain);
 //        this.s3Client = AmazonS3ClientBuilder.standard().withRegion(this.region).withCredentials(new AWSStaticCredentialsProvider(basicAWSCredentials)).build();
@@ -48,17 +48,19 @@ public class AmazonClient {
     }
 
     public String uploadFile(File file, String fileName) {
-        s3Client.putObject(new PutObjectRequest(awsBucketName, fileName, file).withCannedAcl(CannedAccessControlList.PublicRead));
-        return "https://s3.us-east-1.amazonaws.com/" + awsBucketName + "/" + fileName;
+//        s3Client.putObject(new PutObjectRequest(awsBucketName, fileName, file).withCannedAcl(CannedAccessControlList.PublicRead));
+//        return "https://s3.us-east-1.amazonaws.com/" + awsBucketName + "/" + fileName;
+        return "";
     }
 
     public String deleteFile(String url) {
-        String fileName = url.substring(url.lastIndexOf("/") + 1);
-        s3Client.deleteObject(new DeleteObjectRequest(awsBucketName, fileName));
-        return fileName;
+//        String fileName = url.substring(url.lastIndexOf("/") + 1);
+//        s3Client.deleteObject(new DeleteObjectRequest(awsBucketName, fileName));
+//        return fileName;
+        return "";
     }
 
     public void publish(String email) {
-        snsClient.publish(new PublishRequest(topicArn, email));
+        //snsClient.publish(new PublishRequest(topicArn, email));
     }
 }
