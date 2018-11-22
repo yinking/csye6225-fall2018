@@ -2,6 +2,7 @@ package com.example.demo.configuration;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.route53.AmazonRoute53ClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
@@ -40,8 +41,10 @@ public class AmazonClient {
     @PostConstruct
     public void init() {
         BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(this.awsAccessKeyId, this.awsSecretKey);
-        this.s3Client = AmazonS3ClientBuilder.standard().withRegion(this.region).withCredentials(new AWSStaticCredentialsProvider(basicAWSCredentials)).build();
-        this.snsClient = AmazonSNSClientBuilder.standard().withRegion(this.region).withCredentials(new AWSStaticCredentialsProvider(basicAWSCredentials)).build();
+        String domain=AmazonRoute53ClientBuilder.standard().build().listHostedZones().getHostedZones().get(0).getName();
+        System.out.println(domain);
+//        this.s3Client = AmazonS3ClientBuilder.standard().withRegion(this.region).withCredentials(new AWSStaticCredentialsProvider(basicAWSCredentials)).build();
+//        this.snsClient = AmazonSNSClientBuilder.standard().withRegion(this.region).withCredentials(new AWSStaticCredentialsProvider(basicAWSCredentials)).build();
     }
 
     public String uploadFile(File file, String fileName) {
