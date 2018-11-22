@@ -28,20 +28,20 @@ public class AmazonClient {
 
     @Value("${accountNumber}")
     String accountNumber;
-//
-//    @Value("${awsAccessKeyId}")
-//    private String awsAccessKeyId;
-//
-//    @Value("${awsSecretKey}")
-//    private String awsSecretKey;
+
+    @Value("${awsAccessKeyId}")
+    private String awsAccessKeyId;
+
+    @Value("${awsSecretKey}")
+    private String awsSecretKey;
 //
 //    @Value("${topicArn}")
 //    private String topicArn;
 
     @PostConstruct
     public void init() {
-        //BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(this.awsAccessKeyId, this.awsSecretKey);
-        String domain=AmazonRoute53ClientBuilder.standard().build().listHostedZones().getHostedZones().get(0).getName();
+        BasicAWSCredentials basicAWSCredentials = new BasicAWSCredentials(this.awsAccessKeyId, this.awsSecretKey);
+        String domain=AmazonRoute53ClientBuilder.standard().withRegion(this.region).withCredentials(new AWSStaticCredentialsProvider(basicAWSCredentials)).build().listHostedZones().getHostedZones().get(0).getName();
         System.out.println(domain);
 //        this.s3Client = AmazonS3ClientBuilder.standard().withRegion(this.region).withCredentials(new AWSStaticCredentialsProvider(basicAWSCredentials)).build();
 //        this.snsClient = AmazonSNSClientBuilder.standard().withRegion(this.region).withCredentials(new AWSStaticCredentialsProvider(basicAWSCredentials)).build();
