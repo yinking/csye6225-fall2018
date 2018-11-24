@@ -1,0 +1,75 @@
+{
+  "Parameters": {
+    "stackName": {
+      "Type": "String"
+    },
+    "domainName": {
+      "Type": "String"
+    }
+  },
+  "Resources": {
+    "myLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "FunctionName": "myLambdaFunction",
+        "Handler": "myLambda/index.handler",
+        "Role": {
+          "Fn::ImportValue": "LambdaExecutionRoleArn"
+        },
+        "Code": {
+          "S3Bucket": {
+            "Fn::Join": [
+              "",
+              [
+                "lambda-functions.",
+                {
+                  "Ref": "domainName"
+                }
+              ]
+            ]
+          },
+          "S3Key": "myLambda.zip"
+        },
+        "Runtime": "nodejs8.10",
+        "Tags": [
+          {
+            "Key": "Name",
+            "Value": {
+              "Ref": "stackName"
+            }
+          }
+        ]
+      }
+    },
+    "mySNSTopic": {
+      "Type": "AWS::SNS::Topic",
+      "Properties": {
+        "Subscription": [
+          {
+            "Endpoint": {
+              "Fn::GetAtt": [
+                "myLambdaFunction",
+                "Arn"
+              ]
+            },
+            "Protocol": "lambda"
+          }
+        ],
+        "TopicName": "password_reset"
+      }
+    },
+    "myLambdaPermission": {
+      "Type": "AWS::Lambda::Permission",
+      "Properties": {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": {
+          "Ref": "myLambdaFunction"
+        },
+        "Principal": "sns.amazonaws.com",
+        "SourceArn": {
+          "Ref": "mySNSTopic"
+        }
+      }
+    }
+  }
+}

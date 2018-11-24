@@ -326,6 +326,22 @@
         "Name": "mySubnet1"
       }
     },
+    "mySubnet2Output": {
+      "Value": {
+        "Ref": "mySubnet2"
+      },
+      "Export": {
+        "Name": "mySubnet2"
+      }
+    },
+    "mySubnet3Output": {
+      "Value": {
+        "Ref": "mySubnet3"
+      },
+      "Export": {
+        "Name": "mySubnet3"
+      }
+    },
     "mySubnetsOutput": {
       "Value": {
         "Fn::Join": [
