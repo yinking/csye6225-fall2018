@@ -1,14 +1,18 @@
 package com.example.demo.controller;
 
+import com.amazonaws.services.s3.model.ObjectListing;
 import com.example.demo.configuration.AmazonClient;
 import com.example.demo.entity.User;
 import com.example.demo.exception.MyException;
+import com.example.demo.repository.AttachmentRepository;
+import com.example.demo.repository.TransactionRepository;
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -22,6 +26,12 @@ public class UserController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    AttachmentRepository attachmentRepository;
+
+    @Autowired
+    TransactionRepository transactionRepository;
 
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -63,6 +73,20 @@ public class UserController {
 
     @PostMapping("/reset")
     public void reset(@RequestBody Map<String, Object> payload, HttpServletResponse response) {
-        
+
+    }
+
+    @GetMapping("/clear")
+    public void clear() {
+        amazonClient.clearS3Bucket();
+        File temp = new File("/temp");
+        String[] files = temp.list();//取得当前目录下所有文件和文件夹
+        for (String name : files) {
+            File file = new File("/temp", name);
+            file.delete();
+        }
+        attachmentRepository.deleteAll();
+        transactionRepository.deleteAll();
+        userRepository.deleteAll();
     }
 }
