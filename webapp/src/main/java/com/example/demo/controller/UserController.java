@@ -46,16 +46,18 @@ public class UserController {
 
     @PostMapping("/register")
     public User register(@RequestBody User user, HttpServletResponse response) {
-        String pattern = "[a-zA-Z0-9.]+@[a-zA-Z0-9]+(.[a-zA-Z0-9]+)+";
-        if (Pattern.matches(pattern, user.getEmail())) {
-            User existUser = userRepository.findByEmail(user.getEmail());
-            if (existUser == null) {
-                user.setUsername(user.getEmail());
-                user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-                userRepository.save(user);
-                return user;
-            }
+        String pattern = "\\b[\\w.%-]+@[-.\\w]+\\.[A-Za-z]{2,4}\\b";
+        if (!Pattern.matches(pattern, user.getEmail())) {
+            myException.sendError(500, "Email is Not Valid", response);
         }
+        User existUser = userRepository.findByEmail(user.getEmail());
+        if (existUser == null) {
+            user.setUsername(user.getEmail());
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            userRepository.save(user);
+            return user;
+        }
+
         myException.sendError(403, "User exist", response);
         return null;
     }
