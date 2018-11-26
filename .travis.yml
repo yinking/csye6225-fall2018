@@ -13,7 +13,6 @@ after_success:
 - mv csye6225-web-app-${TRAVIS_JOB_NUMBER}.zip codedeploy_artifact/
 
 deploy:
-  skip_cleanup: true
 - provider: s3
   local_dir: codedeploy_artifact
   bucket: $code_deploy_s3_bucket
