@@ -419,5 +419,15 @@
         }
       }
     }
+  },
+  "Outputs": {
+    "ApplicationLoadBalancer": {
+      "Value": {
+        "Ref": "ApplicationLoadBalancer"
+      },
+      "Export": {
+        "Name": "ApplicationLoadBalancer"
+      }
+    }
   }
 }
