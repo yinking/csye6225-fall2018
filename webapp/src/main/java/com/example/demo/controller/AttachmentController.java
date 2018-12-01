@@ -62,7 +62,7 @@ public class AttachmentController {
     }
 
     @PostMapping
-    public Attachment post(@RequestParam(value = "file") MultipartFile file, @PathVariable UUID id, Authentication authentication, HttpServletResponse response) {
+    public Attachment post(@RequestParam(value = "myfile") MultipartFile file, @PathVariable UUID id, Authentication authentication, HttpServletResponse response) {
         Transaction transaction = getTransaction(authentication, id);
         if (transaction == null) {
             myException.sendError(403, "Transaction not exist", response);
