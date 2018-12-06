@@ -229,9 +229,9 @@
         "MetricName": "CPUUtilization",
         "Namespace": "AWS/EC2",
         "Statistic": "Average",
-        "Period": "300",
-        "EvaluationPeriods": "2",
-        "Threshold": "90",
+        "Period": "120",
+        "EvaluationPeriods": "1",
+        "Threshold": "10",
         "AlarmActions": [
           {
             "Ref": "WebServerScaleUpPolicy"
@@ -255,9 +255,9 @@
         "MetricName": "CPUUtilization",
         "Namespace": "AWS/EC2",
         "Statistic": "Average",
-        "Period": "300",
-        "EvaluationPeriods": "2",
-        "Threshold": "70",
+        "Period": "120",
+        "EvaluationPeriods": "1",
+        "Threshold": "8",
         "AlarmActions": [
           {
             "Ref": "WebServerScaleDownPolicy"
@@ -384,11 +384,16 @@
       "Type": "AWS::ElasticLoadBalancingV2::Listener",
       "Properties": {
         "DefaultActions": [
-          {
-            "Type": "forward",
-            "TargetGroupArn": {
-              "Ref": "ALBTargetGroup"
-            }
+        {
+             "Type":"redirect",
+             "RedirectConfig":{
+                "Protocol":"HTTPS",
+                "Host":"#{host}",
+                "Query":"#{query}",
+                "Path":"/#{path}",
+                "Port":"443",
+                "StatusCode":"HTTP_301"
+             }
           }
         ],
         "LoadBalancerArn": {
