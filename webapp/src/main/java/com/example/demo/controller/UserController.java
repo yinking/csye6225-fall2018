@@ -71,6 +71,15 @@ public class UserController {
         return false;
     }
 
+    @GetMapping("/user/{email}")
+    public Boolean userExist(@PathVariable String email) {
+        User existUser = userRepository.findByEmail(email);
+        if (existUser != null) {
+            return true;
+        }
+        return false;
+    }
+
     @PostMapping("/forget")
     public void forget(@RequestBody Map<String, Object> payload, HttpServletResponse response) {
         String email = (String) payload.get("email");
