@@ -8,9 +8,11 @@ import com.example.demo.repository.AttachmentRepository;
 import com.example.demo.repository.TransactionRepository;
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.util.List;
@@ -71,8 +73,9 @@ public class UserController {
         return false;
     }
 
-    @GetMapping("/user/{email}")
-    public Boolean userExist(@PathVariable String email) {
+    @GetMapping("/user")
+    public Boolean userExist(HttpServletRequest request) {
+        String email = request.getParameter("email");
         User existUser = userRepository.findByEmail(email);
         if (existUser != null) {
             return true;
